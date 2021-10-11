@@ -122,6 +122,44 @@ public:
          grabKeyboardFocus();
          sHasGrabbedFocus = true;
       }
+
+      juce::Point<int> mouse = Desktop::getMousePosition();
+      mouse -= mScreenPosition;
+      mSynth.MouseMoved(mouse.x, mouse.y);
+
+      mInputEventMutex.lock();
+      for (auto& inputEvent : mInputEventQueue)
+      {
+         switch (inputEvent.mType)
+         {
+         case UserInputEvent::EventType::kMouseDown:
+            mSynth.MousePressed(inputEvent.mX, inputEvent.mY, inputEvent.mButton);
+            break;
+         case UserInputEvent::EventType::kMouseUp:
+            mSynth.MouseReleased(inputEvent.mX, inputEvent.mY, inputEvent.mButton);
+            break;
+         case UserInputEvent::EventType::kMouseDrag:
+            mSynth.MouseDragged(inputEvent.mX, inputEvent.mY, inputEvent.mButton);
+            break;
+         case UserInputEvent::EventType::kMouseScroll:
+            mSynth.MouseScrolled(inputEvent.mX, inputEvent.mY, true);
+            break;
+         case UserInputEvent::EventType::kMouseMagnify:
+            mSynth.MouseMagnify(inputEvent.mX, inputEvent.mY, inputEvent.mFactor);
+            break;
+         case UserInputEvent::EventType::kKeyPress:
+            mSynth.KeyPressed(inputEvent.mKeycode, inputEvent.mIsRepeat);
+            break;
+         case UserInputEvent::EventType::kKeyRelease:
+            mSynth.KeyReleased(inputEvent.mKeycode);
+            break;
+         case UserInputEvent::EventType::kDropFiles:
+            mSynth.FilesDropped(inputEvent.mFiles, inputEvent.mX, inputEvent.mY);
+            break;
+         }
+      }
+      mInputEventQueue.clear();
+      mInputEventMutex.unlock();
       
       mSynth.Poll();
       
@@ -339,12 +377,6 @@ public:
       if (mSynth.IsLoadingState())
          return;
       
-      mSynth.LockRender(true);
-      
-      juce::Point<int> mouse = Desktop::getMousePosition();
-      mouse -= mScreenPosition;
-      mSynth.MouseMoved(mouse.x, mouse.y);
-      
       float width = getWidth();
       float height = getHeight();
       
@@ -356,6 +388,8 @@ public:
       if (kMotionTrails <= 0)
          glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
       
+      mSynth.LockRender(true);
+
       nvgBeginFrame(mVG, width, height, mPixelRatio);
       
       if (kMotionTrails > 0)
@@ -405,19 +439,75 @@ public:
    }
    
 private:
+   struct UserInputEvent
+   {
+      enum class EventType
+      {
+         kMouseDown,
+         kMouseUp,
+         kMouseDrag,
+         kMouseScroll,
+         kMouseMagnify,
+         kKeyPress,
+         kKeyRelease,
+         kDropFiles
+      };
+
+      EventType mType;
+
+      //for mouse events
+      float mX;
+      float mY;
+      int mButton;
+
+      //for kMouseMagnify
+      float mFactor;
+
+      //for key events
+      int mKeycode;
+      bool mIsRepeat;
+
+      //for kDropFiles
+      std::vector<std::string> mFiles;
+   };
+
+   ofMutex mInputEventMutex;
+   std::vector<UserInputEvent> mInputEventQueue;
+
    void mouseDown(const MouseEvent& e) override
    {
-      mSynth.MousePressed(e.getMouseDownX(), e.getMouseDownY(), e.mods.isPopupMenu() ? 2 : 1);
+      mInputEventMutex.lock();
+      UserInputEvent inputEvent;
+      inputEvent.mType = UserInputEvent::EventType::kMouseDown;
+      inputEvent.mX = e.getMouseDownX();
+      inputEvent.mY = e.getMouseDownY();
+      inputEvent.mButton = e.mods.isPopupMenu() ? 2 : 1;
+      mInputEventQueue.push_back(inputEvent);
+      mInputEventMutex.unlock();
    }
    
    void mouseUp(const MouseEvent& e) override
    {
-      mSynth.MouseReleased(e.getPosition().x, e.getPosition().y, e.mods.isPopupMenu() ? 2 : 1);
+      mInputEventMutex.lock();
+      UserInputEvent inputEvent;
+      inputEvent.mType = UserInputEvent::EventType::kMouseUp;
+      inputEvent.mX = e.getPosition().x;
+      inputEvent.mY = e.getPosition().y;
+      inputEvent.mButton = e.mods.isPopupMenu() ? 2 : 1;
+      mInputEventQueue.push_back(inputEvent);
+      mInputEventMutex.unlock();
    }
    
    void mouseDrag(const MouseEvent& e) override
    {
-      mSynth.MouseDragged(e.getPosition().x, e.getPosition().y, e.mods.isPopupMenu() ? 2 : 1);
+      mInputEventMutex.lock();
+      UserInputEvent inputEvent;
+      inputEvent.mType = UserInputEvent::EventType::kMouseDrag;
+      inputEvent.mX = e.getPosition().x;
+      inputEvent.mY = e.getPosition().y;
+      inputEvent.mButton = e.mods.isPopupMenu() ? 2 : 1;
+      mInputEventQueue.push_back(inputEvent);
+      mInputEventMutex.unlock();
    }
    
    void mouseMove(const MouseEvent& e) override
@@ -437,12 +527,27 @@ private:
          scale = 30;
 
       if (!wheel.isInertial)
-         mSynth.MouseScrolled(wheel.deltaX * scale, wheel.deltaY * scale * invert, true);
+      {
+         mInputEventMutex.lock();
+         UserInputEvent inputEvent;
+         inputEvent.mType = UserInputEvent::EventType::kMouseScroll;
+         inputEvent.mX = wheel.deltaX * scale;
+         inputEvent.mY = wheel.deltaY * scale * invert;
+         mInputEventQueue.push_back(inputEvent);
+         mInputEventMutex.unlock();
+      }
    }
    
    void mouseMagnify(const MouseEvent& e, float scaleFactor) override
    {
-      mSynth.MouseMagnify(e.getPosition().x, e.getPosition().y, scaleFactor);
+      mInputEventMutex.lock();
+      UserInputEvent inputEvent;
+      inputEvent.mType = UserInputEvent::EventType::kMouseMagnify;
+      inputEvent.mX = e.getPosition().x;
+      inputEvent.mY = e.getPosition().y;
+      inputEvent.mFactor = scaleFactor;
+      mInputEventQueue.push_back(inputEvent);
+      mInputEventMutex.unlock();
    }
    
    bool keyPressed(const KeyPress& key) override
@@ -456,7 +561,15 @@ private:
          mPressedKeys.push_back(keyCode);
          isRepeat = false;
       }
-      mSynth.KeyPressed(keyCode, isRepeat);
+
+      mInputEventMutex.lock();
+      UserInputEvent inputEvent;
+      inputEvent.mType = UserInputEvent::EventType::kKeyPress;
+      inputEvent.mKeycode = keyCode;
+      inputEvent.mIsRepeat = isRepeat;
+      mInputEventQueue.push_back(inputEvent);
+      mInputEventMutex.unlock();
+
       return true;
    }
    
@@ -469,7 +582,14 @@ private:
             if (!KeyPress::isKeyCurrentlyDown(keyCode))
             {
                mPressedKeys.remove(keyCode);
-               mSynth.KeyReleased(keyCode);
+               
+               mInputEventMutex.lock();
+               UserInputEvent inputEvent;
+               inputEvent.mType = UserInputEvent::EventType::kKeyRelease;
+               inputEvent.mKeycode = keyCode;
+               mInputEventQueue.push_back(inputEvent);
+               mInputEventMutex.unlock();
+
                break;
             }
          }
@@ -490,10 +610,15 @@ private:
    
    void filesDropped(const StringArray& files, int x, int y) override
    {
-      std::vector<std::string> strFiles;
+      mInputEventMutex.lock();
+      UserInputEvent inputEvent;
+      inputEvent.mType = UserInputEvent::EventType::kDropFiles;
+      inputEvent.mX = x;
+      inputEvent.mY = y;
       for (auto file : files)
-         strFiles.push_back(file.toStdString());
-      mSynth.FilesDropped(strFiles, x, y);
+         inputEvent.mFiles.push_back(file.toStdString());
+      mInputEventQueue.push_back(inputEvent);
+      mInputEventMutex.unlock();
    }
    
    std::string GetAudioDevices()
