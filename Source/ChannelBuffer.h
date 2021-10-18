@@ -36,11 +36,17 @@ public:
    ChannelBuffer(float* data, int bufferSize);  //intended as a temporary holder for passing raw data to methods that want a ChannelBuffer
    ~ChannelBuffer();
    
-   float* GetChannel(int channel);
+   float* ChannelBuffer::GetChannel(int channel) const
+   {
+#if DEBUG
+      if (channel >= mActiveChannels)
+         ofLog() << "error: requesting a higher channel index than we have active";
+#endif
+      return mBuffers[channel];
+   }
    
    void Clear() const;
    
-   void SetMaxAllowedChannels(int channels);
    void SetNumActiveChannels(int channels) { mActiveChannels = MIN(mNumChannels, channels); }
    int NumActiveChannels() const { return mActiveChannels; }
    int RecentNumActiveChannels() const { return mRecentActiveChannels; }
@@ -64,12 +70,12 @@ public:
    static const int kMaxNumChannels = 2;
    
 private:
-   void Setup(int bufferSize);
+   void Setup(int bufferSize, int numChannels);
    
    int mActiveChannels;
    int mNumChannels;
    int mBufferSize;
-   float** mBuffers;
+   std::array<float*, kMaxNumChannels> mBuffers;
    int mRecentActiveChannels;
    bool mOwnsBuffers;
 };
