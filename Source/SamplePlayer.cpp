@@ -1116,7 +1116,7 @@ void SamplePlayer::DrawModule()
       if (mIsLoadingSample && !mSample->IsSampleLoading())
       {
          mIsLoadingSample = false;
-         mDrawBuffer.Resize(mSample->LengthInSamples());
+         mDrawBuffer.Resize(mSample->NumChannels(), mSample->LengthInSamples());
          mDrawBuffer.CopyFrom(mSample->Data());
       }
 

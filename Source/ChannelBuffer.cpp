@@ -83,7 +83,8 @@ void ChannelBuffer::CopyFrom(ChannelBuffer* src, int length /*= -1*/, int startO
    assert(length <= mBufferSize);
    assert(length + startOffset <= src->mBufferSize);
    mActiveChannels = src->mActiveChannels;
-   for (int i=0; i<mActiveChannels; ++i)
+   mNumChannels = src->mNumChannels;
+   for (int i=0; i < mNumChannels; ++i)
    {
       if (src->mBuffers[i])
       {
@@ -110,13 +111,13 @@ void ChannelBuffer::SetChannelPointer(float* data, int channel, bool deleteOldDa
    mBuffers[channel] = data;
 }
 
-void ChannelBuffer::Resize(int bufferSize)
+void ChannelBuffer::Resize(int numChannels, int bufferSize)
 {
    assert(mOwnsBuffers);
    for (int i=0; i<mNumChannels; ++i)
       delete[] mBuffers[i];
    
-   Setup(bufferSize, mNumChannels);
+   Setup(bufferSize, numChannels);
 }
 
 namespace

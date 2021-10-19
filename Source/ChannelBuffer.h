@@ -36,7 +36,7 @@ public:
    ChannelBuffer(float* data, int bufferSize);  //intended as a temporary holder for passing raw data to methods that want a ChannelBuffer
    ~ChannelBuffer();
    
-   float* ChannelBuffer::GetChannel(int channel) const
+   float* GetChannel(int channel) const
    {
 #if DEBUG
       if (channel >= mActiveChannels)
@@ -55,7 +55,7 @@ public:
    void CopyFrom(ChannelBuffer* src, int length = -1, int startOffset = 0);
    void SetChannelPointer(float* data, int channel, bool deleteOldData);
    void Reset() { Clear(); mRecentActiveChannels = mActiveChannels; SetNumActiveChannels(1); }
-   void Resize(int bufferSize);
+   void Resize(int numChannels, int bufferSize);
    
    enum class LoadMode
    {

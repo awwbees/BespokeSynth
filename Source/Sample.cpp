@@ -65,11 +65,14 @@ bool Sample::Read(const char* path, bool mono, ReadType readType)
    
    if (mReader != nullptr)
    {
-      mData.Resize((int)mReader->lengthInSamples);
+      int channels;
       if (mono)
-         mData.SetNumActiveChannels(1);
+         channels = 1;
       else
-         mData.SetNumActiveChannels(mReader->numChannels);
+         channels = mReader->numChannels;
+
+      mData.Resize(channels, (int)mReader->lengthInSamples);
+      mData.SetNumActiveChannels(channels);
       mData.Clear();
 
       mNumSamples = (int)mReader->lengthInSamples;
@@ -135,7 +138,7 @@ void Sample::timerCallback()
 
 void Sample::Create(int length)
 {
-   mData.Resize(length);
+   mData.Resize(1, length);
    mData.SetNumActiveChannels(1);
    Setup(length);
 }
@@ -144,7 +147,7 @@ void Sample::Create(ChannelBuffer* data)
 {
    int channels = data->NumActiveChannels();
    int length = data->BufferSize();
-   mData.Resize(length);
+   mData.Resize(channels, length);
    mData.SetNumActiveChannels(channels);
    for (int ch=0; ch<channels; ++ch)
       BufferCopy(mData.GetChannel(ch), data->GetChannel(ch), length);
@@ -311,8 +314,8 @@ void Sample::ShiftWrap(int numSamplesToShift)
 void Sample::CopyFrom(Sample* sample)
 {
    mNumSamples = sample->mNumSamples;
-   if (mData.BufferSize() != sample->mData.BufferSize())
-      mData.Resize(sample->mNumSamples);
+   if (mData.BufferSize() != sample->mData.BufferSize() || sample->mData.NumTotalChannels() != mData.NumTotalChannels())
+      mData.Resize(sample->mData.NumTotalChannels(), sample->mNumSamples);
    mData.CopyFrom(&sample->mData);
    mNumBars = sample->mNumBars;
    mLooping = sample->mLooping;
