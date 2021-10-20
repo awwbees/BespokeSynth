@@ -303,7 +303,7 @@ void CircleSequencerRing::MouseMoved(float x, float y)
       ofVec2f polar = CarToPol(x-100,y-100);
       float change = (polar.y - mLastMouseRadius) / 50.0f;
       
-      mSteps[mCurrentlyClickedStepIdx] = ofClamp(mSteps[mCurrentlyClickedStepIdx]+change,0,1);
+      mSteps[mCurrentlyClickedStepIdx] = std::clamp(mSteps[mCurrentlyClickedStepIdx]+change,0,1);
       
       mLastMouseRadius = polar.y;
    }

@@ -178,7 +178,7 @@ float EnvelopeModulator::Value(int samplesIn /*= 0*/)
 {
    ComputeSliders(samplesIn);
    if (mTarget)
-      return ofClamp(Interp(mAdsr.Value(gTime + samplesIn * gInvSampleRateMs), GetMin(), GetMax()), mTarget->GetMin(), mTarget->GetMax());
+      return std::clamp(Interp(mAdsr.Value(gTime + samplesIn * gInvSampleRateMs), GetMin(), GetMax()), mTarget->GetMin(), mTarget->GetMax());
    return 0;
 }
 

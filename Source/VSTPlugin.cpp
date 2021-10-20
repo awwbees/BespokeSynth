@@ -510,13 +510,13 @@ void VSTPlugin::Process(double time)
             if (modWheel != mod.mLastModWheel)
             {
                mod.mLastModWheel = modWheel;
-               mMidiBuffer.addEvent(juce::MidiMessage::controllerEvent(channel, mModwheelCC, ofClamp(modWheel * 127,0,127)), 0);
+               mMidiBuffer.addEvent(juce::MidiMessage::controllerEvent(channel, mModwheelCC, std::clamp(modWheel * 127,0,127)), 0);
             }
             float pressure = mod.mModulation.pressure ? mod.mModulation.pressure->GetValue(0) : 0;
             if (pressure != mod.mLastPressure)
             {
                mod.mLastPressure = pressure;
-               mMidiBuffer.addEvent(juce::MidiMessage::channelPressureChange(channel, ofClamp(pressure*127,0,127)), 0);
+               mMidiBuffer.addEvent(juce::MidiMessage::channelPressureChange(channel, std::clamp(pressure*127,0,127)), 0);
             }
          }
          

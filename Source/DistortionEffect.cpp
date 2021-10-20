@@ -91,7 +91,7 @@ void DistortionEffect::ProcessAudio(double time, ChannelBuffer* buffer)
          for (int i=0; i<bufferSize; ++i)
          {
             ComputeSliders(i);
-            buffer->GetChannel(ch)[i] = (ofClamp((buffer->GetChannel(ch)[i] + mFuzzAmount * mPeakTracker[ch].GetPeak()) * mPreamp * mGain, -1, 1)) / mGain;
+            buffer->GetChannel(ch)[i] = (std::clamp((buffer->GetChannel(ch)[i] + mFuzzAmount * mPeakTracker[ch].GetPeak()) * mPreamp * mGain, -1, 1)) / mGain;
          }
       }
       else if (mType == kClean)
@@ -115,7 +115,7 @@ void DistortionEffect::ProcessAudio(double time, ChannelBuffer* buffer)
          for (int i = 0; i < bufferSize; ++i)
          {
             ComputeSliders(i);
-            buffer->GetChannel(ch)[i] = asin(ofClamp((buffer->GetChannel(ch)[i] +  mFuzzAmount * mPeakTracker[ch].GetPeak()) * mPreamp * mGain, -1, 1)) / mGain;
+            buffer->GetChannel(ch)[i] = asin(std::clamp((buffer->GetChannel(ch)[i] +  mFuzzAmount * mPeakTracker[ch].GetPeak()) * mPreamp * mGain, -1, 1)) / mGain;
          }
       }
       //soft and asymmetric from http://www.music.mcgill.ca/~gary/courses/projects/618_2009/NickDonaldson/#Distortion
@@ -156,7 +156,7 @@ void DistortionEffect::ProcessAudio(double time, ChannelBuffer* buffer)
          for (int i=0; i<bufferSize; ++i)
          {
             ComputeSliders(i);
-            float sample = ofClamp((buffer->GetChannel(ch)[i]*.5f+ mFuzzAmount * mPeakTracker[ch].GetPeak()) * mPreamp * mGain, -100, 100);
+            float sample = std::clamp((buffer->GetChannel(ch)[i]*.5f+ mFuzzAmount * mPeakTracker[ch].GetPeak()) * mPreamp * mGain, -100, 100);
             while (sample > 1 || sample < -1)
             {
                if (sample > 1)
@@ -198,7 +198,7 @@ float DistortionEffect::GetEffectAmount()
 {
    if (!mEnabled)
       return 0;
-   return ofClamp((mPreamp-1)/10+(1-mClip),0,1);
+   return std::clamp((mPreamp-1)/10+(1-mClip),0,1);
 }
 
 void DistortionEffect::CheckboxUpdated(Checkbox* checkbox)

@@ -93,7 +93,7 @@ void MultibandCompressor::Process(double time)
          {
             mFilters[j].ProcessSample(highLeftover, lower, highLeftover);
             mPeaks[j].Process(&lower, 1);
-            float compress = ofClamp(1/mPeaks[i].GetPeak(), 0, 10);
+            float compress = std::clamp(1/mPeaks[i].GetPeak(), 0, 10);
             mOutBuffer[i] += lower * compress;
          }
          mOutBuffer[i] += highLeftover;
@@ -112,7 +112,7 @@ void MultibandCompressor::Process(double time)
          //multiply carrier band by modulator band level
          if (mPeaks[i].GetPeak() > 0)
          {
-            float compress = ofClamp(1/mPeaks[i].GetPeak(), 0, 10);
+            float compress = std::clamp(1/mPeaks[i].GetPeak(), 0, 10);
             Mult(mWorkBuffer, compress, bufferSize);
          }
          

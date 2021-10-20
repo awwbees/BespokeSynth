@@ -57,7 +57,7 @@ void NoteFilter::DrawModule()
       checkbox->Draw();
       ofPushStyle();
       ofFill();
-      ofSetColor(0,255,0,(1 - ofClamp((gTime - mLastPlayTime[pitch])/250,0,1))*255);
+      ofSetColor(0,255,0,(1 - std::clamp((gTime - mLastPlayTime[pitch])/250,0,1))*255);
       ofRect(75,checkbox->GetPosition(true).y+4,8,8);
       ofPopStyle();
       ++pitch;

@@ -108,7 +108,7 @@ bool KarplusStrongVoice::Process(double time, ChannelBuffer* out, int oversampli
       float sample = 0;
       float oscSample = mOsc.Audio(time, mOscPhase);
       float noiseSample = RandomSample();
-      float pitchBlend = ofClamp((pitch - 40) / 60.0f,0,1);
+      float pitchBlend = std::clamp((pitch - 40) / 60.0f,0,1);
       pitchBlend *= pitchBlend;
       if (mVoiceParams->mSourceType == kSourceTypeSin || mVoiceParams->mSourceType == kSourceTypeSaw)
          sample = oscSample;
@@ -201,7 +201,7 @@ void KarplusStrongVoice::DoParameterUpdate(int samplesIn,
    
    freq = TheScale->PitchToFreq(pitch);
    filterRate = mVoiceParams->mFilter * pow(freq/300, exp2(mVoiceParams->mPitchTone)) * (1 + GetModWheel(samplesIn));
-   filterLerp = ofClamp(exp2(-filterRate / oversampling), 0, 1);
+   filterLerp = std::clamp(exp2(-filterRate / oversampling), 0, 1);
    
    oscPhaseInc = GetPhaseInc(mVoiceParams->mExciterFreq) / oversampling;
 }

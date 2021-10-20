@@ -188,7 +188,7 @@ bool IClickable::CheckNeedsDraw()
 
 float IClickable::GetBeaconAmount() const
 {
-   return ofClamp(((mBeaconTime + 250) - gTime) / 250, 0, 1);
+   return std::clamp(((mBeaconTime + 250) - gTime) / 250, 0, 1);
 }
 
 void IClickable::DrawBeacon(int x, int y)

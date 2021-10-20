@@ -191,7 +191,7 @@ float SingleOscillatorVoice::GetADSRScale(float velocity, float velToEnvelope)
 {
    if (velToEnvelope > 0)
       return ofLerp((1 - velToEnvelope), 1, velocity);
-   return ofClamp(ofLerp(1, 1+velToEnvelope, velocity), 0.001f, 1);
+   return std::clamp(ofLerp(1, 1+velToEnvelope, velocity), 0.001f, 1);
 }
 
 void SingleOscillatorVoice::Start(double time, float target)

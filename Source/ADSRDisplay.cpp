@@ -137,7 +137,7 @@ void ADSRDisplay::Render()
       else
       {
          if (mAdsr->GetStartTime(gTime) > 0 && mAdsr->GetStartTime(gTime) >= mAdsr->GetStopTime(gTime))
-            drawTime = ofClamp(gTime - mAdsr->GetStartTime(gTime), 0, releaseTime * mAdsr->GetTimeScale()) / mAdsr->GetTimeScale();
+            drawTime = std::clamp(float(gTime - mAdsr->GetStartTime(gTime)), 0.0f, releaseTime * mAdsr->GetTimeScale()) / mAdsr->GetTimeScale();
          if (mAdsr->GetStopTime(gTime) > mAdsr->GetStartTime(gTime))
             drawTime = releaseTime + (gTime - mAdsr->GetStopTime(gTime));
       }
@@ -389,31 +389,31 @@ bool ADSRDisplay::MouseMoved(float x, float y)
          case kAdjustAttack:
          case kAdjustAttackAR:
          {
-            float a = ofClamp(mClickAdsr.GetA() + mousePosSq * mMaxTime * .1f,1,mMaxTime);
+            float a = std::clamp(mClickAdsr.GetA() + mousePosSq * mMaxTime * .1f,1.0f,mMaxTime);
             mViewAdsr.GetA() = a;
             mAdsr->GetA() = a;
             break;
          }
          case kAdjustDecaySustain:
          {
-            float d = ofClamp(mClickAdsr.GetD() + mousePosSq * mMaxTime,1,mMaxTime);
+            float d = std::clamp(mClickAdsr.GetD() + mousePosSq * mMaxTime,1.0f,mMaxTime);
             mViewAdsr.GetD() = d;
             mAdsr->GetD() = d;
-            float s = ofClamp(mClickAdsr.GetS() + (mClickStart.y-y)/mHeight,0,1);
+            float s = std::clamp(mClickAdsr.GetS() + (mClickStart.y-y)/mHeight,0.0f,1.0f);
             mViewAdsr.GetS() = s;
             mAdsr->GetS() = s;
             break;
          }
          case kAdjustRelease:
          {
-            float r = ofClamp(mClickAdsr.GetR() + mousePosSq * mMaxTime,1,mMaxTime);
+            float r = std::clamp(mClickAdsr.GetR() + mousePosSq * mMaxTime,1.0f,mMaxTime);
             mViewAdsr.GetR() = r;
             mAdsr->GetR() = r;
             break;
          }
          case kAdjustReleaseAR:
          {
-            float r = ofClamp(mClickAdsr.GetD() + mousePosSq * mMaxTime, 1, mMaxTime);
+            float r = std::clamp(mClickAdsr.GetD() + mousePosSq * mMaxTime, 1.0f, mMaxTime);
             mViewAdsr.GetD() = r;
             mAdsr->GetD() = r;
             break;

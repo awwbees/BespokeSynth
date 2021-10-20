@@ -78,7 +78,7 @@ void UnstablePitch::DrawModule()
    {
       float x = rect.x + col * (rect.width / kGridSize);
       float y = rect.y;
-      float val = mPerlin.GetValue(gTime, x / rect.width * 10, 0) * ofClamp(mPerlin.mPerlinAmount * 5, 0, 1);
+      float val = mPerlin.GetValue(gTime, x / rect.width * 10, 0) * std::clamp(mPerlin.mPerlinAmount * 5, 0, 1);
       ofSetColor(val * 255, 0, val * 255);
       ofRect(x, y, (rect.width / kGridSize) + .5f, rect.height + .5f, 0);
    }
@@ -92,7 +92,7 @@ void UnstablePitch::DrawModule()
          ofBeginShape();
          for (int i = 0; i < gBufferSize; ++i)
          {
-            float sample = ofClamp(mModulation.GetPitchBend(voice)->GetBufferValue(i) * 5, -1, 1);
+            float sample = std::clamp(mModulation.GetPitchBend(voice)->GetBufferValue(i) * 5, -1, 1);
             ofVertex((i*rect.width) / gBufferSize + rect.x, rect.y + (-sample * .5f + .5f) * rect.height);
          }
          ofEndShape();

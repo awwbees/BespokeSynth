@@ -230,7 +230,7 @@ void BandVocoder::CalcFilters()
    for (int i=0; i<mNumBands; ++i)
    {
       float a = float(i)/(mNumBands-1);
-      float freqMax = ofClamp(mFreqBase + mFreqRange, 0, gSampleRate/2);
+      float freqMax = std::clamp(mFreqBase + mFreqRange, 0.0f, gSampleRate/2);
       float fExp = mFreqBase * powf(freqMax / mFreqBase, a);
       float fLin = ofLerp(mFreqBase, freqMax, a);
       float fBass = ofLerp(mFreqBase, freqMax, a*a*a*a);

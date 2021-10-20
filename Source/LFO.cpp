@@ -75,7 +75,7 @@ float LFO::CalculatePhase(int samplesIn /*= 0*/, bool doTransform /* = true*/) c
 float LFO::TransformPhase(float phase) const
 {
    if (mLength != 1)
-      phase = int(phase) + ofClamp((phase - int(phase)) / mLength, 0, 1);
+      phase = int(phase) + std::clamp((phase - int(phase)) / mLength, 0, 1);
    return phase;
 }
 
@@ -196,7 +196,7 @@ void LFO::OnTransportAdvanced(float amount)
       float drunk = ofRandom(-distance, distance);
       if (mDrunk + drunk > 1 || mDrunk + drunk < 0)
          drunk *= -1;
-      mDrunk = ofClamp(mDrunk+drunk, 0, 1);
+      mDrunk = std::clamp(mDrunk+drunk, 0, 1);
    }
    if (mPeriod == kInterval_Free || mOsc.GetType() == kOsc_Perlin)
    {

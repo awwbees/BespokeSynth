@@ -235,7 +235,7 @@ void Arpeggiator::OnTimeEvent(double time)
       }
       else
       {
-         mArpIndex = ofClamp(mArpIndex,0,mChord.size()-1);
+         mArpIndex = std::clamp(mArpIndex,0,(int)mChord.size()-1);
       }
    }
 
@@ -258,7 +258,7 @@ void Arpeggiator::OnTimeEvent(double time)
          offPitch = -1;
       }
       float pressure = current.modulation.pressure ? current.modulation.pressure->GetValue(0) : 0;
-      PlayNoteOutput(time, outPitch, ofClamp(current.vel+127*pressure,0,127), current.voiceIdx, current.modulation);
+      PlayNoteOutput(time, outPitch, std::clamp(int(current.vel+127*pressure),0,127), current.voiceIdx, current.modulation);
       mLastPitch = outPitch;
    }
    if (offPitch != -1)

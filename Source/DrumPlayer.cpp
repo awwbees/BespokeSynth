@@ -970,7 +970,7 @@ void DrumPlayer::FloatSliderUpdated(FloatSlider* slider, float oldVal)
       dir.findChildFiles(files, File::findFiles, false);
       if (files.size() > 0)
       {
-         mAuditionSampleIdx = ofClamp(mAuditionSampleIdx,0,files.size()-1);
+         mAuditionSampleIdx = std::clamp(mAuditionSampleIdx,0,(int)files.size()-1);
          
          std::string file = files[mAuditionSampleIdx].getFullPathName().toStdString();
          if (mSelectedHitIdx >= 0 && mSelectedHitIdx < NUM_DRUM_HITS)

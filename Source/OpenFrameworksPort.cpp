@@ -259,15 +259,6 @@ void ofRect(const ofRectangle& rect, float cornerRadius /*=3*/)
    ofRect(rect.x,rect.y,rect.width,rect.height, cornerRadius);
 }
 
-float ofClamp(float val, float a, float b)
-{
-   if (val < a)
-      return a;
-   if (val > b)
-      return b;
-   return val;
-}
-
 float ofGetLastFrameTime()
 {
    /*TODO_PORT(Ryan)*/
@@ -350,7 +341,7 @@ float ofMap(float val, float fromStart, float fromEnd, float toStart, float toEn
    else
       ret = toEnd;
    if (clamp)
-      ret = ofClamp(ret, MIN(toStart,toEnd), MAX(toStart,toEnd));
+      ret = std::clamp(ret, MIN(toStart,toEnd), MAX(toStart,toEnd));
    return ret;
 }
 
@@ -641,8 +632,8 @@ void ofColor::getHsb(float& hue,
 
 void ofColor::setHsb(int hue, int saturation, int brightness)
 {
-   saturation = ofClamp(saturation, 0, 255);
-   brightness = ofClamp(brightness, 0, 255);
+   saturation = std::clamp(saturation, 0, 255);
+   brightness = std::clamp(brightness, 0, 255);
    if(brightness == 0) { // black
       set(0,0,0);
    } else if(saturation == 0) { // grays

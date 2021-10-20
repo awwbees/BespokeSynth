@@ -213,12 +213,12 @@ void SpaceMouseMessageWindow::Impl::ApplyDeadZone(float &var, float deadzone)
 
 void SpaceMouseMessageWindow::Impl::SbMotionEvent(SiSpwEvent *pEvent) {
    const float kMax = 2100.0f;
-   float tx = ofClamp(pEvent->u.spwData.mData[SI_TX] / kMax, -1, 1);
-   float ty = ofClamp(pEvent->u.spwData.mData[SI_TY] / kMax, -1, 1);
-   float tz = ofClamp(pEvent->u.spwData.mData[SI_TZ] / kMax, -1, 1);
-   float rx = ofClamp(pEvent->u.spwData.mData[SI_RX] / kMax, -1, 1);
-   float ry = ofClamp(pEvent->u.spwData.mData[SI_RY] / kMax, -1, 1);
-   float rz = ofClamp(pEvent->u.spwData.mData[SI_RZ] / kMax, -1, 1);
+   float tx = std::clamp(pEvent->u.spwData.mData[SI_TX] / kMax, -1, 1);
+   float ty = std::clamp(pEvent->u.spwData.mData[SI_TY] / kMax, -1, 1);
+   float tz = std::clamp(pEvent->u.spwData.mData[SI_TZ] / kMax, -1, 1);
+   float rx = std::clamp(pEvent->u.spwData.mData[SI_RX] / kMax, -1, 1);
+   float ry = std::clamp(pEvent->u.spwData.mData[SI_RY] / kMax, -1, 1);
+   float rz = std::clamp(pEvent->u.spwData.mData[SI_RZ] / kMax, -1, 1);
 
    float rawTwist = ry;
    float rawZoom = ty;

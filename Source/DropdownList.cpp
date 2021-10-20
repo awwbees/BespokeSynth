@@ -300,7 +300,7 @@ void DropdownList::Clear()
 
 void DropdownList::SetFromMidiCC(float slider, bool setViaModulator /*= false*/)
 {
-   slider = ofClamp(slider,0,1);
+   slider = std::clamp(slider,0.0f,1.0f);
    SetIndex(int(slider*mElements.size()));
    mSliderVal = slider;
    mLastSetValue = *mVar;
@@ -315,7 +315,7 @@ float DropdownList::GetValueForMidiCC(float slider) const
       return 0;
    
    int index = int(slider*mElements.size());
-   index = ofClamp(index,0,mElements.size()-1);
+   index = std::clamp(index,0,(int)mElements.size()-1);
    return mElements[index].mValue;
 }
 
@@ -324,7 +324,7 @@ void DropdownList::SetIndex(int i, bool forceUpdate /*= false*/)
    if (mElements.empty())
       return;
    
-   i = ofClamp(i,0,mElements.size()-1);
+   i = std::clamp(i,0,(int)mElements.size()-1);
    
    SetValue(mElements[i].mValue, forceUpdate);
 }

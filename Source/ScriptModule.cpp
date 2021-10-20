@@ -384,8 +384,8 @@ void ScriptModule::DrawModuleUnclipped()
          ofSetColor(IDrawableModule::GetColor(kModuleType_Other), 30);
          ofFill();
          float codeY = mCodeEntry->GetPosition(true).y;
-         float topY = ofClamp(linePos.y + 3, codeY, codeY+mCodeEntry->GetRect().height);
-         float bottomY = ofClamp(linePos.y + 3 + mCodeEntry->GetCharHeight(), codeY, codeY+mCodeEntry->GetRect().height);
+         float topY = std::clamp(linePos.y + 3, codeY, codeY+mCodeEntry->GetRect().height);
+         float bottomY = std::clamp(linePos.y + 3 + mCodeEntry->GetCharHeight(), codeY, codeY+mCodeEntry->GetRect().height);
          ofRectangle lineRect(linePos.x, topY, mCodeEntry->GetRect().width, bottomY - topY);
          ofRect(lineRect, L(corner, 0));
 
@@ -1481,7 +1481,7 @@ void ScriptReferenceDisplay::DrawModule()
 
 bool ScriptReferenceDisplay::MouseScrolled(int x, int y, float scrollX, float scrollY)
 {
-   mScrollOffset.y = ofClamp(mScrollOffset.y - scrollY * 10, 0, mMaxScrollAmount);
+   mScrollOffset.y = std::clamp(mScrollOffset.y - scrollY * 10, 0, mMaxScrollAmount);
    return true;
 }
 

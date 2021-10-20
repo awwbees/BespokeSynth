@@ -211,7 +211,7 @@ void EQModule::DrawModule()
    {
       float freq = FreqForBin(i);
       float x = PosForFreq(freq) * w;
-      float samp = ofClamp(sqrtf(fabsf(mFFTData.mRealValues[i]) / end) * 3 * mDrawGain, 0, 1);
+      float samp = std::clamp(sqrtf(fabsf(mFFTData.mRealValues[i]) / end) * 3 * mDrawGain, 0, 1);
       float y = (1 - samp) * h + kDrawYOffset;
       if (int(x) != lastX)
          ofVertex(x, y);

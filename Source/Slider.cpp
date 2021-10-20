@@ -153,7 +153,7 @@ void FloatSlider::Render()
    {
       ofPushStyle();
       ofSetColor(255,255,0,gModuleDrawAlpha);
-      float val = ofClamp(mSmoothTarget,mMin,mMax);
+      float val = std::clamp(mSmoothTarget,mMin,mMax);
       float screenPos = mX+1+(mWidth-2)*ValToPos(val, false);
       ofSetLineWidth(1);
       ofFill();
@@ -165,9 +165,9 @@ void FloatSlider::Render()
    if (mModulator && mModulator->Active() && !AdjustSmooth())
    {
       screenPos = mX+1+(mWidth-2)*ValToPos(*mVar, true);
-      float lfomax = ofClamp(mModulator->GetMax(),mMin,mMax);
+      float lfomax = std::clamp(mModulator->GetMax(),mMin,mMax);
       float screenPosMax = mX+1+(mWidth-2)*ValToPos(lfomax, true);
-      float lfomin = ofClamp(mModulator->GetMin(),mMin,mMax);
+      float lfomin = std::clamp(mModulator->GetMin(),mMin,mMax);
       float screenPosMin = mX+1+(mWidth-2)*ValToPos(lfomin, true);
       
       ofPushStyle();
@@ -192,7 +192,7 @@ void FloatSlider::Render()
          ofSetColor(30,30,30,gModuleDrawAlpha);
       if (AdjustSmooth())
          ofSetColor(255,255, 0, gModuleDrawAlpha);
-      float val = ofClamp(*mVar,mMin,mMax);
+      float val = std::clamp(*mVar,mMin,mMax);
       screenPos = mX+1+(mWidth-2)*ValToPos(val, false);
       ofSetLineWidth(2);
       ofLine(screenPos,mY+1,screenPos,mY+mHeight-1);  //value bar
@@ -416,9 +416,9 @@ void FloatSlider::SetValueForMouse(int x, int y)
          *var -= mRelativeOffset;
       }
    }
-   *var = ofClamp(*var,mMin,mMax);
+   *var = std::clamp(*var,mMin,mMax);
    if (clampInt)
-      *var = ofClamp(*var,mClampIntMin,mClampIntMax);
+      *var = std::clamp(*var,mClampIntMin,mClampIntMax);
    
    if (oldVal != *var)
    {
@@ -429,7 +429,7 @@ void FloatSlider::SetValueForMouse(int x, int y)
    {
       float move = (y - mRefY) * -.003f;
       float change = move * (mMax - mMin);
-      mModulator->GetMin() = ofClamp(mModulator->GetMin() + change, mMin, mModulator->GetMax());
+      mModulator->GetMin() = std::clamp(mModulator->GetMin() + change, mMin, mModulator->GetMax());
       mRefY = y;
    }
 }
@@ -463,7 +463,7 @@ void FloatSlider::SetFromMidiCC(float slider, bool setViaModulator /*= false*/)
 
 float FloatSlider::GetValueForMidiCC(float slider) const
 {
-   slider = ofClamp(slider,0,1);
+   slider = std::clamp(slider,0,1);
    return PosToVal(slider, true);
 }
 
@@ -547,7 +547,7 @@ void FloatSlider::SetValue(float value)
       }
    }
    /*if (mClamped)
-      *var = ofClamp(value,mMin,mMax);
+      *var = std::clamp(value,mMin,mMax);
    else*/
       *var = value;
    DisableLFO();
@@ -939,7 +939,7 @@ void IntSlider::Render()
       ofPopStyle();
    }
 
-   int val = ofClamp(*mVar,mMin,mMax);
+   int val = std::clamp(*mVar,mMin,mMax);
    ofPushStyle();
    ofSetLineWidth(2);
    
@@ -1082,7 +1082,7 @@ void IntSlider::SetValueForMouse(int x, int y)
 {
    int oldVal = *mVar;
    *mVar = (int)round(ofMap(x+mX,mX+1,mX+mWidth-1,mMin,mMax));
-   *mVar = ofClamp(*mVar,mMin,mMax);
+   *mVar = std::clamp(*mVar,mMin,mMax);
    if (oldVal != *mVar)
    {
       CalcSliderVal();
@@ -1092,7 +1092,7 @@ void IntSlider::SetValueForMouse(int x, int y)
 
 void IntSlider::SetFromMidiCC(float slider, bool setViaModulator /*= false*/)
 {
-   slider = ofClamp(slider,0,1);
+   slider = std::clamp(slider,0,1);
    SetValue(GetValueForMidiCC(slider));
    mSliderVal = slider;
    mLastSetValue = *mVar;
@@ -1100,14 +1100,14 @@ void IntSlider::SetFromMidiCC(float slider, bool setViaModulator /*= false*/)
 
 float IntSlider::GetValueForMidiCC(float slider) const
 {
-   slider = ofClamp(slider,0,1);
+   slider = std::clamp(slider,0,1);
    return (int)round(ofMap(slider,0,1,mMin,mMax));
 }
 
 void IntSlider::SetValue(float value)
 {
    int oldVal = *mVar;
-   *mVar = (int)ofClamp(value,mMin,mMax);
+   *mVar = (int)std::clamp(value,mMin,mMax);
    if (oldVal != *mVar)
    {
       CalcSliderVal();

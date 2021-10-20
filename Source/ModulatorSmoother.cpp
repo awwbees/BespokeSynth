@@ -93,7 +93,7 @@ void ModulatorSmoother::OnTransportAdvanced(float amount)
 float ModulatorSmoother::Value(int samplesIn)
 {
    ComputeSliders(samplesIn);
-   return ofClamp(mRamp.Value(gTime + samplesIn * gInvSampleRateMs), GetMin(), GetMax());
+   return std::clamp(mRamp.Value(gTime + samplesIn * gInvSampleRateMs), GetMin(), GetMax());
 }
 
 void ModulatorSmoother::SaveLayout(ofxJSONElement& moduleInfo)

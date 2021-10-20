@@ -91,7 +91,7 @@ float ModulatorCurve::Value(int samplesIn)
    mAdsr.Clear();
    mAdsr.Start(0,1);
    mAdsr.Stop(kAdsrTime);
-   float val = ofClamp(mAdsr.Value(mInput * kAdsrTime), 0, 1);
+   float val = std::clamp(mAdsr.Value(mInput * kAdsrTime), 0, 1);
    if (val != val)
       val = 0;
    return ofLerp(GetMin(), GetMax(), val);

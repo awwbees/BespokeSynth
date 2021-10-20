@@ -67,7 +67,7 @@ public:
    void SampleDropped(int x, int y, Sample* sample) override;
    bool CanDropSample() const override { return true; }
    bool IsResizable() const override { return true; }
-   void Resize(float width, float height) override { mWidth = ofClamp(width, 210, 9999); mHeight = ofClamp(height, 125, 9999); }
+   void Resize(float width, float height) override { mWidth = std::clamp(width, 210, 9999); mHeight = std::clamp(height, 125, 9999); }
    
    void SetCuePoint(int pitch, float startSeconds, float lengthSeconds, float speed);
    void FillData(std::vector<float> data);

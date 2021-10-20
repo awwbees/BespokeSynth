@@ -93,7 +93,7 @@ void UIGrid::Render()
          if (data)
          {
             ofFill();
-            float sliderFillAmount = ofClamp(ofLerp(.15f, 1, data), 0, 1);
+            float sliderFillAmount = std::clamp(ofLerp(.15f, 1, data), 0, 1);
             if (mGridMode == kNormal)
             {
                ofSetColor(255 * data, 255 * data, 255 * data, gModuleDrawAlpha);
@@ -101,7 +101,7 @@ void UIGrid::Render()
             }
             else if (mGridMode == kMultislider)
             {
-               float fadeAmount = ofClamp(ofLerp(.5f, 1, data), 0, 1);
+               float fadeAmount = std::clamp(ofLerp(.5f, 1, data), 0, 1);
                ofSetColor(255 * fadeAmount, 255 * fadeAmount, 255 * fadeAmount, gModuleDrawAlpha);
                ofRect(x+.5f, y+.5f+(ysize*(1- sliderFillAmount)), xsize-1, ysize*sliderFillAmount -1, 0);
                /*ofSetColor(255, 255, 255, gModuleDrawAlpha);
@@ -115,7 +115,7 @@ void UIGrid::Render()
             }
             else if (mGridMode == kMultisliderBipolar)
             {
-               float fadeAmount = ofClamp(ofLerp(.5f, 1, data), 0, 1);
+               float fadeAmount = std::clamp(ofLerp(.5f, 1, data), 0, 1);
                ofSetColor(255 * fadeAmount, 255 * fadeAmount, 255 * fadeAmount, gModuleDrawAlpha);
                ofRect(x, y + ysize * (.5f - sliderFillAmount/2), xsize, ysize * sliderFillAmount);
                
@@ -187,19 +187,19 @@ GridCell UIGrid::GetGridCellAt(float x, float y, float* clickHeight, float* clic
    float xsize = float(mWidth) / mCols;
    float ysize = float(mHeight) / mRows;
    
-   int col = ofClamp(x/xsize, 0, mCols-1);
-   int row = ofClamp(y/ysize, 0, mRows-1);
+   int col = std::clamp(x/xsize, 0, mCols-1);
+   int row = std::clamp(y/ysize, 0, mRows-1);
    
    if (clickHeight)
    {
-      *clickHeight = ofClamp(1 - (y/ysize - ofClamp((int)(y/ysize),0,mRows-1)),0,1);
+      *clickHeight = std::clamp(1 - (y/ysize - std::clamp((int)(y/ysize),0,mRows-1)),0,1);
       if (mFlip)
          *clickHeight = 1 - *clickHeight;
    }
    
    if (clickWidth)
    {
-      *clickWidth = ofClamp(x/xsize - ofClamp((int)(x/xsize),0,mCols-1),0,1);
+      *clickWidth = std::clamp(x/xsize - std::clamp((int)(x/xsize),0,mCols-1),0,1);
    }
    
    return GridCell(col,row);
@@ -405,7 +405,7 @@ bool UIGrid::MouseScrolled(int x, int y, float scrollX, float scrollY)
          if (!mSingleColumn || data > 0)
          {
             float oldValue = data;
-            data = ofClamp(data + scrollY / 100, FLT_EPSILON, 1);
+            data = std::clamp(data + scrollY / 100, FLT_EPSILON, 1);
             if (mListener)
                mListener->GridUpdated(this, cell.mCol, cell.mRow, data, oldValue);
          }
@@ -417,8 +417,8 @@ bool UIGrid::MouseScrolled(int x, int y, float scrollX, float scrollY)
 
 void UIGrid::SetGrid(int cols, int rows)
 {
-   cols = ofClamp(cols, 0, MAX_GRID_SIZE);
-   rows = ofClamp(rows, 0, MAX_GRID_SIZE);
+   cols = std::clamp(cols, 0, MAX_GRID_SIZE);
+   rows = std::clamp(rows, 0, MAX_GRID_SIZE);
    mRows = rows;
    mCols = cols;
 }
@@ -430,15 +430,15 @@ void UIGrid::Clear()
 
 float& UIGrid::GetVal(int col, int row)
 {
-   col = ofClamp(col, 0, MAX_GRID_SIZE-1);
-   row = ofClamp(row, 0, MAX_GRID_SIZE-1);
+   col = std::clamp(col, 0, MAX_GRID_SIZE-1);
+   row = std::clamp(row, 0, MAX_GRID_SIZE-1);
    return mData[GetDataIndex(col,row)];
 }
 
 void UIGrid::SetVal(int col, int row, float val, bool notifyListener)
 {
-   col = ofClamp(col, 0, MAX_GRID_SIZE-1);
-   row = ofClamp(row, 0, MAX_GRID_SIZE-1);
+   col = std::clamp(col, 0, MAX_GRID_SIZE-1);
+   row = std::clamp(row, 0, MAX_GRID_SIZE-1);
    if (val != mData[GetDataIndex(col,row)])
    {
       float oldValue = mData[GetDataIndex(col,row)];

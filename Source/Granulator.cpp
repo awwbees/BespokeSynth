@@ -144,7 +144,7 @@ void Grain::Process(double time, ChannelBuffer* buffer, int bufferLength, float*
       float window = GetWindow(time);
       for (int ch=0; ch<buffer->NumActiveChannels(); ++ch)
       {
-         float sample = GetInterpolatedSample(mPos, buffer, bufferLength, ofClamp(ch + mStereoPosition, 0, 1));
+         float sample = GetInterpolatedSample(mPos, buffer, bufferLength, std::clamp(ch + mStereoPosition, 0, 1));
          output[ch] += sample * window * mVol * (1 + (ch == 0 ? mStereoPosition : -mStereoPosition));
       }
    }

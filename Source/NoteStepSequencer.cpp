@@ -521,7 +521,7 @@ void NoteStepSequencer::SetStep(int index, int pitch, int velocity, float length
    if (index >= 0 && index < NSS_MAX_STEPS)
    {
       mTones[index] = PitchToRow(pitch);
-      mVels[index] = ofClamp(velocity, 0, 127);
+      mVels[index] = std::clamp(velocity, 0, 127);
       mNoteLengths[index] = length;
       SyncGridToSeq();
    }
@@ -895,7 +895,7 @@ void NoteStepSequencer::ButtonClicked(ClickButton* button)
       {
          if (ofRandom(1) <= mRandomizeLengthChance)
          {
-            float newLength = ofClamp(ofRandom(2), FLT_EPSILON, 1);
+            float newLength = std::clamp(ofRandom(2), FLT_EPSILON, 1);
             mNoteLengths[i] = ofLerp(mNoteLengths[i], newLength, mRandomizeLengthRange);
          }
       }
@@ -972,7 +972,7 @@ void NoteStepSequencer::RandomizePitches(bool fifths)
             float minValue = MAX(0, mTones[i] - mNoteRange * mRandomizePitchRange);
             float maxValue = MIN(mNoteRange, mTones[i] + mNoteRange * mRandomizePitchRange);
             if (minValue != maxValue)
-               mTones[i] = ofClamp(int(ofRandom(minValue, maxValue) + .5f), 0, mNoteRange-1);
+               mTones[i] = std::clamp(int(ofRandom(minValue, maxValue) + .5f), 0, mNoteRange-1);
          }
       }
    }

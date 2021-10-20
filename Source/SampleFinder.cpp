@@ -210,8 +210,8 @@ bool SampleFinder::MouseScrolled(int x, int y, float scrollX, float scrollY)
       
       float slideX = (mZoomEnd - mZoomStart) * -scrollX/300;
       
-      mZoomStart = ofClamp(zoomCenter - distFromStart + slideX, 0, mSample->LengthInSamples());
-      mZoomEnd = ofClamp(zoomCenter - distFromEnd + slideX, 0, mSample->LengthInSamples());
+      mZoomStart = std::clamp(zoomCenter - distFromStart + slideX, 0, mSample->LengthInSamples());
+      mZoomEnd = std::clamp(zoomCenter - distFromEnd + slideX, 0, mSample->LengthInSamples());
       UpdateZoomExtents();
       return true;
    }

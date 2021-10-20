@@ -107,7 +107,7 @@ void DelayEffect::ProcessAudio(double time, ChannelBuffer* buffer)
       float delaySamps = delay / gInvSampleRateMs;
       if (mFeedbackModuleMode)
          delaySamps -= gBufferSize;
-      delaySamps = ofClamp(delaySamps, 0.1f, DELAY_BUFFER_SIZE-2);
+      delaySamps = std::clamp(delaySamps, 0.1f, DELAY_BUFFER_SIZE-2);
 
       int sampsAgoA = int(delaySamps);
       int sampsAgoB = sampsAgoA+1;

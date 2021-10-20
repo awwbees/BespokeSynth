@@ -475,7 +475,7 @@ void Looper::DoCommit()
          
          for (int ch=0; ch<mBuffer->NumActiveChannels(); ++ch)
          {
-            mBuffer->GetChannel(ch)[pos] += mCommitBuffer->GetSample(ofClamp(commitLength - i + commitSamplesBack,0,MAX_BUFFER_SIZE-1), ch) * fade;
+            mBuffer->GetChannel(ch)[pos] += mCommitBuffer->GetSample(std::clamp(commitLength - i + commitSamplesBack,0,MAX_BUFFER_SIZE-1), ch) * fade;
          }
       }
    }
@@ -668,9 +668,9 @@ void Looper::DrawModule()
    ofTranslate(BUFFER_X,BUFFER_Y);
    ofPushStyle();
    ofFill();
-   float age = ofClamp((gTime-mLastCommitTime)/240000,0,1);
+   float age = std::clamp((gTime-mLastCommitTime)/240000,0,1);
    ofSetColor(100,0,0,gModuleDrawAlpha*.2f);
-   ofRect(0,0,BUFFER_W,BUFFER_H*ofClamp(age*2,0,1));
+   ofRect(0,0,BUFFER_W,BUFFER_H*std::clamp(age*2,0,1));
    if (age > .5f)
    {
       ofSetColor(200,0,0,gModuleDrawAlpha*.2f);

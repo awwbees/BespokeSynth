@@ -1079,7 +1079,7 @@ void MidiController::DrawModule()
 
                if (on)
                {
-                  float fadeAmount = ofClamp(ofLerp(.5f, 1, control.mLastValue), 0, 1);
+                  float fadeAmount = std::clamp(ofLerp(.5f, 1, control.mLastValue), 0, 1);
                   ofPushStyle();
                   ofFill();
                   ofSetColor(255 * fadeAmount, 255 * fadeAmount, 255 * fadeAmount, gModuleDrawAlpha);

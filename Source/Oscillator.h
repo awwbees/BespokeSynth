@@ -43,7 +43,7 @@ public:
    float GetShuffle() const { return mShuffle; }
    void SetShuffle(float shuffle) { mShuffle = MIN(shuffle, .999f); }
    float GetSoften() const { return mSoften; }
-   void SetSoften(float soften) { mSoften = ofClamp(soften,0,1); }
+   void SetSoften(float soften) { mSoften = std::clamp(soften,0,1); }
    OscillatorType mType;
 private:
    float SawSample(float phase) const;

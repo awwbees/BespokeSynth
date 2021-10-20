@@ -203,7 +203,7 @@ PYBIND11_EMBEDDED_MODULE(scriptmodule, m)
          {
             float min, max;
             control->GetRange(min, max);
-            float value = ofClamp(control->GetValue() + amount, min, max);
+            float value = std::clamp(control->GetValue() + amount, min, max);
             module.ScheduleUIControlValue(control, value, 0);
          }
       })
@@ -660,7 +660,7 @@ PYBIND11_EMBEDDED_MODULE(module, m)
          {
             float min, max;
             control->GetRange(min, max);
-            float value = ofClamp(control->GetValue() + amount, min, max);
+            float value = std::clamp(control->GetValue() + amount, min, max);
             control->SetValue(value);
          }
       });

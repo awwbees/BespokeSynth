@@ -410,11 +410,11 @@ bool Canvas::MouseMoved(float x, float y)
 
       float viewLength = mViewEnd - mViewStart;
       float moveX = -delta.x / mWidth * viewLength;
-      mViewStart = ofClamp(mDragCanvasStartCanvasPos.x + moveX, 0, mLength - viewLength);
+      mViewStart = std::clamp(mDragCanvasStartCanvasPos.x + moveX, 0.0f, mLength - viewLength);
       mViewEnd = mViewStart + viewLength;
 
       float moveY = -delta.y / mHeight * GetNumVisibleRows();
-      mRowOffset = ofClamp(int(mDragCanvasStartCanvasPos.y + moveY + .5f), 0, GetNumRows() - GetNumVisibleRows());
+      mRowOffset = std::clamp(int(mDragCanvasStartCanvasPos.y + moveY + .5f), 0, GetNumRows() - GetNumVisibleRows());
    }
    else
    {
@@ -430,16 +430,16 @@ bool Canvas::MouseMoved(float x, float y)
          float originalViewLength = mDragZoomStartDimensions.x;
          float originalViewCenterX = mDragCanvasStartCanvasPos.x;
          float newViewLength = MAX((1 - delta.x / mWidth) * originalViewLength, .01f);
-         mViewStart = ofClamp(originalViewCenterX - newViewLength * (mDragCanvasStartMousePos.x / mWidth), 0, mLength);
-         mViewEnd = ofClamp(originalViewCenterX + newViewLength * (1 - mDragCanvasStartMousePos.x / mWidth), 0, mLength);
+         mViewStart = std::clamp(originalViewCenterX - newViewLength * (mDragCanvasStartMousePos.x / mWidth), 0.0f, mLength);
+         mViewEnd = std::clamp(originalViewCenterX + newViewLength * (1 - mDragCanvasStartMousePos.x / mWidth), 0.0f, mLength);
       }
 
       {
          float originalViewHeight = mDragZoomStartDimensions.y;
          float originalViewCenterY = mDragCanvasStartCanvasPos.y;
          float newViewHeight = MAX((1 + delta.y / mHeight) * originalViewHeight, .01f);
-         mRowOffset = int(ofClamp(originalViewCenterY - newViewHeight * (mDragCanvasStartMousePos.y / mHeight), 0, mNumRows-1) + .5f);
-         mNumVisibleRows = int(ofClamp(originalViewCenterY + newViewHeight * (1 - mDragCanvasStartMousePos.y / mHeight), mRowOffset+1, mNumRows) + .5f) - mRowOffset;
+         mRowOffset = int(std::clamp(int(originalViewCenterY - newViewHeight * (mDragCanvasStartMousePos.y / mHeight)), 0, mNumRows-1) + .5f);
+         mNumVisibleRows = int(std::clamp(int(originalViewCenterY + newViewHeight * (1 - mDragCanvasStartMousePos.y / mHeight)), mRowOffset+1, mNumRows) + .5f) - mRowOffset;
       }
    }
    else
@@ -510,8 +510,8 @@ bool Canvas::MouseScrolled(int x, int y, float scrollX, float scrollY)
          distFromStart *= 1 - scrollY / 50;
          distFromEnd *= 1 - scrollY / 50;
 
-         mViewStart = ofClamp(zoomCenter - distFromStart, 0, mLength);
-         mViewEnd = ofClamp(zoomCenter - distFromEnd, 0, mLength);
+         mViewStart = std::clamp(zoomCenter - distFromStart, 0.0f, mLength);
+         mViewEnd = std::clamp(zoomCenter - distFromEnd, 0.0f, mLength);
          //ofLog() << mStart << " " << mEnd;
          return true;
       }

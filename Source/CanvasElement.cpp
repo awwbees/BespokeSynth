@@ -234,11 +234,11 @@ void CanvasElement::GetDragDestinationData(ofVec2f dragOffset, int& newRow, int&
 
    newCol = mCol;
    if (mCanvas->GetDragMode() & Canvas::kDragHorizontal)
-      newCol = ofClamp(int(mCol + colDrag + .5f), 0, mCanvas->GetNumCols() - 1);
+      newCol = std::clamp(int(mCol + colDrag + .5f), 0, mCanvas->GetNumCols() - 1);
 
    newRow = mRow;
    if (mCanvas->GetDragMode() & Canvas::kDragVertical)
-      newRow = ofClamp(int(mRow + rowDrag + .5f), 0, mCanvas->GetNumRows() - 1);
+      newRow = std::clamp(int(mRow + rowDrag + .5f), 0, mCanvas->GetNumRows() - 1);
 
    newOffset = mOffset;
    if (GetKeyModifiers() & kModifier_Alt)   //non-snapped drag

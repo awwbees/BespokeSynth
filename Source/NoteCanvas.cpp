@@ -171,8 +171,8 @@ void NoteCanvas::KeyPressed(int key, bool isRepeat)
          {
             if (element->GetHighlighted())
             {
-               element->mRow = ofClamp(element->mRow + directionUpDown, 0, 127);
-               element->mCol = ofClamp(element->mCol + directionLeftRight, 0, mCanvas->GetNumCols()-1);
+               element->mRow = std::clamp(element->mRow + directionUpDown, 0, 127);
+               element->mCol = std::clamp(element->mCol + directionLeftRight, 0, mCanvas->GetNumCols()-1);
             }
          }
       }

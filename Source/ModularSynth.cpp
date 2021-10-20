@@ -461,7 +461,7 @@ void ModularSynth::ZoomView(float zoomAmount, bool fromMouse)
    gDrawScale *= 1 + zoomAmount;
    float minZoom = .1f;
    float maxZoom = 8;
-   gDrawScale = ofClamp(gDrawScale,minZoom,maxZoom);
+   gDrawScale = std::clamp(gDrawScale,minZoom,maxZoom);
    zoomAmount = (gDrawScale - oldDrawScale) / oldDrawScale; //find actual adjusted amount
    ofVec2f zoomCenter;
    if (fromMouse)
@@ -720,8 +720,8 @@ void ModularSynth::Draw(void* vg)
       float minY = 5 - offset.y;
       float maxY = ofGetHeight() / scale - rect.height - 5 - offset.y;
       
-      float onscreenRectX = ofClamp(rect.x, minX, maxX);
-      float onscreenRectY = ofClamp(rect.y, minY, maxY);
+      float onscreenRectX = std::clamp(rect.x, minX, maxX);
+      float onscreenRectY = std::clamp(rect.y, minY, maxY);
       
       float tooltipBackgroundAlpha = 180;
 
@@ -1430,7 +1430,7 @@ void ModularSynth::MouseScrolled(float x, float y, bool canZoomCanvas)
          val -= change;
       else
          val += change;
-      val = ofClamp(val, 0, 1);
+      val = std::clamp(val, 0, 1);
       gHoveredUIControl->SetFromMidiCC(val);
 
       gHoveredUIControl->NotifyMouseScrolled(GetMouseX(&mModuleContainer), GetMouseY(&mModuleContainer), x, y);

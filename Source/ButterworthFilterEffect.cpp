@@ -113,7 +113,7 @@ float ButterworthFilterEffect::GetEffectAmount()
 {
    if (!mEnabled)
       return 0;
-   return ofClamp(1-(mF/(mFSlider->GetMax() * .75f)),0,1);
+   return std::clamp(1-(mF/(mFSlider->GetMax() * .75f)),0,1);
 }
 
 void ButterworthFilterEffect::ResetFilter()

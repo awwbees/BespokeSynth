@@ -531,12 +531,12 @@ void TextEntry::AcceptEntry(bool pressedEnter)
       *mVarString = mString;
    if (mVarInt && mString[0] != 0)
    {
-      *mVarInt = ofClamp(ofToInt(mString), mIntMin, mIntMax);
+      *mVarInt = std::clamp(ofToInt(mString), mIntMin, mIntMax);
       StringCopy(mString, ofToString(*mVarInt).c_str(), MAX_TEXTENTRY_LENGTH);
    }
    if (mVarFloat && mString[0] != 0)
    {
-      *mVarFloat = ofClamp(ofToFloat(mString), mFloatMin, mFloatMax);
+      *mVarFloat = std::clamp(ofToFloat(mString), mFloatMin, mFloatMax);
       StringCopy(mString, ofToString(*mVarFloat).c_str(), MAX_TEXTENTRY_LENGTH);
    }
    

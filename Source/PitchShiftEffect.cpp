@@ -101,7 +101,7 @@ float PitchShiftEffect::GetEffectAmount()
 {
    if (!mEnabled)
       return 0;
-   return ofClamp(fabsf((mRatio-1)*10),0,1);
+   return std::clamp(fabsf((mRatio-1)*10),0,1);
 }
 
 void PitchShiftEffect::IntSliderUpdated(IntSlider* slider, int oldVal)

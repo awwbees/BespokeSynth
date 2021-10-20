@@ -195,7 +195,7 @@ void SampleBrowser::SetDirectory(String dirPath)
 
 void SampleBrowser::ShowPage(int page)
 {
-   page = ofClamp(page, 0, GetNumPages()-1);
+   page = std::clamp(page, 0, GetNumPages()-1);
    mCurrentPage = page;
    int offset = page * (int)mButtons.size();
    for (int i=0; i<(int)mButtons.size(); ++i)

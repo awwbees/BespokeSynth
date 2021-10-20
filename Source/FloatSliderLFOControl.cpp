@@ -280,7 +280,7 @@ float FloatSliderLFOControl::GetLFOValue(int samplesIn /*= 0*/, float forcePhase
    float val = mLFO.Value(samplesIn, forcePhase);
    if (mLFOSettings.mSpread > 0)
       val = val * (1-mLFOSettings.mSpread) + (-cosf(val * FPI) + 1) * .5f * mLFOSettings.mSpread;
-   return ofClamp(Interp(val, GetMin(), GetMax()), GetTargetMin(), GetTargetMax());
+   return std::clamp(Interp(val, GetMin(), GetMax()), GetTargetMin(), GetTargetMax());
 }
 
 float FloatSliderLFOControl::GetTargetMin() const

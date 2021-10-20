@@ -752,12 +752,12 @@ void LoadStateValidate(bool assertion)
 
 float GetLeftPanGain(float pan)
 {
-   return 1 - ofClamp(pan,-1,1);
+   return 1 - std::clamp(pan,-1,1);
 }
 
 float GetRightPanGain(float pan)
 {
-   return ofClamp(pan,-1,1) + 1;
+   return std::clamp(pan,-1,1) + 1;
 }
 
 void DrawFallbackText(const char* text, float posX, float posY)

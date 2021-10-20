@@ -203,7 +203,7 @@ void KeyboardDisplay::DrawKeyboard(int x, int y, int w, int h)
          key.height /= 3;
          key.y += key.height*2;
          
-         ofSetColor(255,255,255,ofLerp(255, 150, ofClamp((gTime - mLastOnTime[pitch]) / 150.0f, 0, 1)));
+         ofSetColor(255,255,255,ofLerp(255, 150, std::clamp((gTime - mLastOnTime[pitch]) / 150.0f, 0, 1)));
          
          ofRect(key);
       }

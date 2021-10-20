@@ -134,14 +134,14 @@ float Stutter::GetStutterSampleWithWraparoundBlend(int pos, int ch)
       int blendPos = pos - mStutterLength;
       pos = GetBufferReadPos(pos);
       blendPos = GetBufferReadPos(blendPos);
-      pos = ofClamp(pos, 0, mCaptureLength);
-      blendPos = ofClamp(blendPos, 0, mCaptureLength);
+      pos = std::clamp(pos, 0, mCaptureLength);
+      blendPos = std::clamp(blendPos, 0, mCaptureLength);
       return mStutterBuffer.GetChannel(ch)[pos]*a + mStutterBuffer.GetChannel(ch)[blendPos]*(1-a);
    }
    else
    {
       pos = GetBufferReadPos(pos);
-      pos = ofClamp(pos, 0, mCaptureLength);
+      pos = std::clamp(pos, 0, mCaptureLength);
       return mStutterBuffer.GetChannel(ch)[pos];
    }
 }
@@ -266,7 +266,7 @@ void Stutter::DrawStutterBuffer(float x, float y, float width, float height)
 void Stutter::DoCapture()
 {
    mCaptureLength = int(TheTransport->GetDuration(mCurrentStutter.interval) / 1000 * gSampleRate);
-   mCaptureLength = ofClamp(mCaptureLength, 0, STUTTER_BUFFER_SIZE-1);
+   mCaptureLength = std::clamp(mCaptureLength, 0, STUTTER_BUFFER_SIZE-1);
    mCaptureLength /= sStutterSubdivide;
    for (int ch=0; ch<mStutterBuffer.NumActiveChannels(); ++ch)
       mRecordBuffer.ReadChunk(mStutterBuffer.GetChannel(ch), mCaptureLength, 0, ch);

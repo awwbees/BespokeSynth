@@ -109,7 +109,7 @@ public:
    CanvasCoord GetCoordAt(int x, int y);
    void SetNumVisibleRows(int rows) { mNumVisibleRows = rows; }
    int GetNumVisibleRows() const { return MIN(mNumVisibleRows, mNumRows); }
-   void SetRowOffset(int offset) { mRowOffset = ofClamp(offset,0,mNumRows-mNumVisibleRows); }
+   void SetRowOffset(int offset) { mRowOffset = std::clamp(offset,0,mNumRows-mNumVisibleRows); }
    int GetRowOffset() const { return mRowOffset; }
    bool ShouldWrap() const { return mWrap; }
    HighlightEnd GetHighlightEnd() const { return mHighlightEnd; }

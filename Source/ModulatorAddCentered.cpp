@@ -85,7 +85,7 @@ float ModulatorAddCentered::Value(int samplesIn)
 {
    ComputeSliders(samplesIn);
    if (mTarget)
-      return ofClamp(mValue1 + mValue2 * mValue2Range, mTarget->GetMin(), mTarget->GetMax());
+      return std::clamp(mValue1 + mValue2 * mValue2Range, mTarget->GetMin(), mTarget->GetMax());
    else
       return mValue1 + mValue2 * mValue2Range;
 }

@@ -145,7 +145,7 @@ void Compressor::ProcessAudio(double time, ChannelBuffer* buffer)
       for (int ch=0; ch<buffer->NumActiveChannels(); ++ch)
       {
          mDelayBuffer.Write(buffer->GetChannel(ch)[i], ch);
-         buffer->GetChannel(ch)[i] = mDelayBuffer.GetSample(ofClamp(int(mLookahead * gSampleRateMs)+1, 1, mDelayBuffer.Size()-1), ch) * mOutputGain;	// apply gain reduction to input
+         buffer->GetChannel(ch)[i] = mDelayBuffer.GetSample(std::clamp(int(mLookahead * gSampleRateMs)+1, 1, mDelayBuffer.Size()-1), ch) * mOutputGain;	// apply gain reduction to input
       }
    }
 }
@@ -171,7 +171,7 @@ void Compressor::DrawModule()
    
    mRatioSlider->GetPosition(x, y, K(local));
    mRatioSlider->GetDimensions(w, h);
-   float outputNormalized = ofClamp(mOutputGain / 10, 0, 1);
+   float outputNormalized = std::clamp(mOutputGain / 10, 0, 1);
    float currentOutputX = ofLerp(x, x+w, sqrtf(outputNormalized));
    ofLine(currentOutputX, y, currentOutputX, y+h);
    

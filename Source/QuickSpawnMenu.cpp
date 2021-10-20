@@ -108,8 +108,8 @@ void QuickSpawnMenu::UpdateDisplay()
       float maxX = ofGetWidth() / GetOwningContainer()->GetDrawScale() - mWidth - 5;
       float minY = TheTitleBar->GetRect().height + 5;
       float maxY = ofGetHeight() / GetOwningContainer()->GetDrawScale() - mHeight - 5;
-      SetPosition(ofClamp(mAppearAtMousePos.x - mWidth / 2, minX, maxX),
-                  ofClamp(mAppearAtMousePos.y - mHeight / 2, minY, maxY));
+      SetPosition(std::clamp(mAppearAtMousePos.x - mWidth / 2, minX, maxX),
+                  std::clamp(mAppearAtMousePos.y - mHeight / 2, minY, maxY));
       SetShowing(true);
    }
 }

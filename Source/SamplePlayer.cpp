@@ -364,7 +364,7 @@ void SamplePlayer::Process(double time)
       if (mOscWheelGrabbed)
       {
          mPlaySpeed = ofLerp(mPlaySpeed, mOscWheelSpeed, kBlendSpeed);
-         mPlaySpeed = ofClamp(mPlaySpeed, -5, 5);
+         mPlaySpeed = std::clamp(mPlaySpeed, -5, 5);
       }
       else
       {
@@ -1253,7 +1253,7 @@ int SamplePlayer::GetZoomStartSample() const
       return 0;
    if (mSample == nullptr)
       return 0;
-   return (int)ofClamp(mSample->LengthInSamples() * mZoomOffset, 0, mSample->LengthInSamples());
+   return (int)std::clamp(mSample->LengthInSamples() * mZoomOffset, 0, mSample->LengthInSamples());
 }
 
 int SamplePlayer::GetZoomEndSample() const
@@ -1265,7 +1265,7 @@ int SamplePlayer::GetZoomEndSample() const
    }
    if (mSample == nullptr)
       return 1;
-   return (int)ofClamp(GetZoomStartSample() + mSample->LengthInSamples() / mZoomLevel, 1, mSample->LengthInSamples());
+   return (int)std::clamp(GetZoomStartSample() + mSample->LengthInSamples() / mZoomLevel, 1, mSample->LengthInSamples());
 }
 
 float SamplePlayer::GetZoomStartSeconds() const
@@ -1339,11 +1339,11 @@ bool SamplePlayer::MouseScrolled(int x, int y, float scrollX, float scrollY)
       scrollX = 0;
 
    //horizontal scroll
-   mZoomOffset = ofClamp(mZoomOffset + scrollX*.005f, 0, 1);
+   mZoomOffset = std::clamp(mZoomOffset + scrollX*.005f, 0, 1);
 
    //zoom scroll
    float oldZoomLevel = mZoomLevel;
-   mZoomLevel = ofClamp(mZoomLevel + scrollY*.2f, 1, 40);
+   mZoomLevel = std::clamp(mZoomLevel + scrollY*.2f, 1, 40);
    float zoomAmount = (mZoomLevel - oldZoomLevel) / oldZoomLevel; //find actual adjusted amount
    float zoomCenter = ofMap(x, 5, mWidth-10, 0, 1, true)/oldZoomLevel;
    mZoomOffset += zoomCenter * zoomAmount;

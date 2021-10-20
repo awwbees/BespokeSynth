@@ -343,7 +343,7 @@ void MultitapDelay::DelayTap::Process(float* sampleOut, int offset, int ch)
    if (mGain > 0)
    {
       float delaySamps = mDelayMs / gInvSampleRateMs;
-      delaySamps = ofClamp(delaySamps - offset, 0.1f, mOwner->mDelayBuffer.Size()-2);
+      delaySamps = std::clamp(delaySamps - offset, 0.1f, mOwner->mDelayBuffer.Size()-2);
       
       int sampsAgoA = int(delaySamps);
       int sampsAgoB = sampsAgoA+1;
@@ -366,7 +366,7 @@ void MultitapDelay::DelayTap::Draw(float w, float h)
 {
    ofPushStyle();
    ofFill();
-   float x = ofClamp(1 - (mDelayMs*gSampleRateMs)/(mOwner->mDisplayLength*gSampleRate), 0, 1) * w;
+   float x = std::clamp(1 - (mDelayMs*gSampleRateMs)/(mOwner->mDisplayLength*gSampleRate), 0, 1) * w;
    float y = h - mGain * h;
    ofLine(x, y, x, h);
    ofRect(x-5, y-5, 10, 10);

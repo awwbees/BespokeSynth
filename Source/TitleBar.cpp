@@ -447,7 +447,7 @@ void TitleBar::DrawModuleUnclipped()
       return;
    }
 
-   float saveCooldown = 1 - ofClamp((gTime - TheSynth->GetLastSaveTime()) / 1000, 0, 1);
+   float saveCooldown = 1 - std::clamp((gTime - TheSynth->GetLastSaveTime()) / 1000, 0, 1);
    if (saveCooldown > 0)
    {
       ofPushStyle();

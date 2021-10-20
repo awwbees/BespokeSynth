@@ -176,7 +176,7 @@ float LiveGranulator::GetEffectAmount()
 {
    if (!mEnabled)
       return 0;
-   return ofClamp(.5f+fabsf(mGranulator.mSpeed-1),0,1);
+   return std::clamp(.5f+fabsf(mGranulator.mSpeed-1),0,1);
 }
 
 void LiveGranulator::Freeze()

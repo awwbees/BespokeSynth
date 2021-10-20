@@ -47,7 +47,7 @@ public:
    void CreateUIControls() override;
    ModuleContainer* GetContainer() override { return &mModuleContainer; }
    bool IsResizable() const override { return true; }
-   void Resize(float width, float height) override { mWidth = ofClamp(width, 210, 9999); }
+   void Resize(float width, float height) override { mWidth = std::clamp(width, 210, 9999); }
    
    void RemoveTrack(MultitrackRecorderTrack* track);
 

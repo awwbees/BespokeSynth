@@ -79,7 +79,7 @@ void ClickButton::Render()
    ofSetColor(0, 0, 0, gModuleDrawAlpha * .5f);
    ofRect(mX+1,mY+1,w,h);
    DrawBeacon(mX+w/2, mY+h/2);
-   float press = ofClamp((1 - (gTime - mClickTime) / 200), 0, 1);
+   float press = std::clamp((1 - (gTime - mClickTime) / 200), 0, 1);
    color.r = ofLerp(color.r, 0, press);
    color.g = ofLerp(color.g, 0, press);
    color.b = ofLerp(color.b, 0, press);

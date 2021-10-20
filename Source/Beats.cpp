@@ -287,13 +287,13 @@ void BeatColumn::Process(double time, ChannelBuffer* buffer, int bufferSize)
             {
                float filter = mFilterRamp.Value(time);
 
-               mLowpass[ch].SetFilterParams(ofMap(sqrtf(ofClamp(-filter, 0, 1)), 0, 1, 6000, 80), sqrt(2) / 2);
-               mHighpass[ch].SetFilterParams(ofMap(ofClamp(filter, 0, 1), 0, 1, 10, 6000), sqrt(2) / 2);
+               mLowpass[ch].SetFilterParams(ofMap(sqrtf(std::clamp(-filter, 0.0f, 1.0f)), 0, 1, 6000, 80), sqrt(2) / 2);
+               mHighpass[ch].SetFilterParams(ofMap(std::clamp(filter, 0.0f, 1.0f), 0, 1, 10, 6000), sqrt(2) / 2);
 
                const float crossfade = .1f;
-               float normalAmount = ofClamp(1 - fabsf(filter / crossfade), 0, 1);
-               float lowAmount = ofClamp(-filter / crossfade, 0, 1);
-               float highAmount = ofClamp(filter / crossfade, 0, 1);
+               float normalAmount = std::clamp(1 - fabsf(filter / crossfade), 0.0f, 1.0f);
+               float lowAmount = std::clamp(-filter / crossfade, 0.0f, 1.0f);
+               float highAmount = std::clamp(filter / crossfade, 0.0f, 1.0f);
 
                int sampleChannel = ch;
                if (beat->NumChannels() == 1)

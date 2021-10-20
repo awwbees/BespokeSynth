@@ -147,13 +147,13 @@ float BiquadFilterEffect::GetEffectAmount()
    if (!mEnabled)
       return 0;
    if (mBiquad[0].mType == kFilterType_Lowpass)
-      return ofClamp(1-(mBiquad[0].mF/(mFSlider->GetMax() * .75f)),0,1);
+      return std::clamp(1-(mBiquad[0].mF/(mFSlider->GetMax() * .75f)),0,1);
    if (mBiquad[0].mType == kFilterType_Highpass)
-      return ofClamp(mBiquad[0].mF/(mFSlider->GetMax() * .75f),0,1);
+      return std::clamp(mBiquad[0].mF/(mFSlider->GetMax() * .75f),0,1);
    if (mBiquad[0].mType == kFilterType_Bandpass)
-      return ofClamp(.3f+(mBiquad[0].mQ/mQSlider->GetMax()),0,1);
+      return std::clamp(.3f+(mBiquad[0].mQ/mQSlider->GetMax()),0,1);
    if (mBiquad[0].mType == kFilterType_Peak)
-      return ofClamp(fabsf(mBiquad[0].mDbGain/96),0,1);
+      return std::clamp(fabsf(mBiquad[0].mDbGain/96),0,1);
    return 0;
 }
 

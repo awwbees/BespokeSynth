@@ -52,7 +52,7 @@ struct UnstablePerlinModulation
 
    float GetValue(double time, float travel, float offset)
    {
-      return mNoise.noise(travel * ofClamp(mPerlinWarble * 10, 0, 1), offset + time * mPerlinNoise / 5, time * mPerlinWarble / 100 + mPerlinSeed);
+      return mNoise.noise(travel * std::clamp(mPerlinWarble * 10, 0, 1), offset + time * mPerlinNoise / 5, time * mPerlinWarble / 100 + mPerlinSeed);
    }
 };
 

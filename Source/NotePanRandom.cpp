@@ -77,7 +77,7 @@ void NotePanRandom::PlayNote(double time, int pitch, int velocity, int voiceIdx,
    if (mEnabled && velocity > 0)
    {
       ComputeSliders(0);
-      modulation.pan = ofClamp(mCenter + ofRandom(-mSpread,mSpread), -1, 1);
+      modulation.pan = std::clamp(mCenter + ofRandom(-mSpread,mSpread), -1, 1);
       
       mPanHistoryDisplay[mPanHistoryDisplayIndex].time = time;
       mPanHistoryDisplay[mPanHistoryDisplayIndex].pan = modulation.pan;

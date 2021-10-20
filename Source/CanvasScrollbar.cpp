@@ -122,11 +122,11 @@ bool CanvasScrollbar::MouseMoved(float x, float y)
       if (mStyle == Style::kHorizontal)
       {
          float viewLength = mCanvas->mViewEnd - mCanvas->mViewStart;
-         mCanvas->mViewStart = ofClamp((x - mScrollBarOffset) / mWidth * mCanvas->GetLength(), 0, mCanvas->GetLength() - viewLength);
+         mCanvas->mViewStart = std::clamp((x - mScrollBarOffset) / mWidth * mCanvas->GetLength(), 0, mCanvas->GetLength() - viewLength);
          mCanvas->mViewEnd = mCanvas->mViewStart + viewLength;
       }
       if (mStyle == Style::kVertical)
-         mCanvas->SetRowOffset(ofClamp(int(ofMap(y - mScrollBarOffset, 0, mHeight, 0, mCanvas->GetNumRows()) + .5f), 0, mCanvas->GetNumRows() - mCanvas->GetNumVisibleRows()));
+         mCanvas->SetRowOffset(std::clamp(int(ofMap(y - mScrollBarOffset, 0, mHeight, 0, mCanvas->GetNumRows()) + .5f), 0, mCanvas->GetNumRows() - mCanvas->GetNumVisibleRows()));
    }
 
    return false;

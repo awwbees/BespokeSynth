@@ -170,7 +170,7 @@ float ::ADSR::Value(double time) const
    
    float stageTimeScale = GetStageTimeScale(stage);
 
-   float lerp = ofClamp((time - stageStartTime) / (mStages[stage].time * stageTimeScale), 0, 1);
+   float lerp = std::clamp((time - stageStartTime) / (mStages[stage].time * stageTimeScale), 0.0f, 1.0f);
    if (mStages[stage].curve != 0)
       lerp = MathUtils::Curve(lerp, mStages[stage].curve * ((stageStartValue < mStages[stage].target*e->mMult) ? 1 : -1));
    

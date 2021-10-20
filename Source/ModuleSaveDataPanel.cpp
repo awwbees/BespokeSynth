@@ -235,9 +235,9 @@ void ModuleSaveDataPanel::UpdatePosition()
    }
    
    if (mShowing)
-      mAppearAmount = ofClamp(mAppearAmount + ofGetLastFrameTime() * 5, 0, 1);
+      mAppearAmount = std::clamp(mAppearAmount + ofGetLastFrameTime() * 5, 0, 1);
    else
-      mAppearAmount = ofClamp(mAppearAmount - ofGetLastFrameTime() * 5, 0, 1);
+      mAppearAmount = std::clamp(mAppearAmount - ofGetLastFrameTime() * 5, 0, 1);
 }
 
 void ModuleSaveDataPanel::ApplyChanges()

@@ -164,8 +164,8 @@ void CanvasTimeline::MouseReleased()
 
       if (mHoverMode == HoverMode::kMiddle)
       {
-         mCanvas->mLoopStart = ofClamp(mCanvas->mLoopStart, 0, mCanvas->GetLength() - loopLength);
-         mCanvas->mLoopEnd = ofClamp(mCanvas->mLoopEnd, loopLength, mCanvas->GetLength());
+         mCanvas->mLoopStart = std::clamp(mCanvas->mLoopStart, 0, mCanvas->GetLength() - loopLength);
+         mCanvas->mLoopEnd = std::clamp(mCanvas->mLoopEnd, loopLength, mCanvas->GetLength());
       }
    }
    mClick = false;

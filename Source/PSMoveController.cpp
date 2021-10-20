@@ -100,21 +100,21 @@ void PSMoveController::Poll()
    bool isButtonDown = false;
    if (mMoveMgr.IsButtonDown(0,Btn_MOVE))
    {
-      mPitch = ofClamp(mPitch + gyros.x/50000,0,1);
+      mPitch = std::clamp(mPitch + gyros.x/50000,0,1);
       if (mPitchUIControl)
          mPitchUIControl->SetFromMidiCC(mPitch);
       isButtonDown = true;
    }
    if (mMoveMgr.IsButtonDown(0,Btn_SQUARE))
    {
-      mYaw = ofClamp(mYaw - gyros.z/50000,0,1);
+      mYaw = std::clamp(mYaw - gyros.z/50000,0,1);
       if (mYawUIControl)
          mYawUIControl->SetFromMidiCC(mYaw);
       isButtonDown = true;
    }
    if (mMoveMgr.IsButtonDown(0,Btn_T))
    {
-      mRoll = ofClamp(mRoll + gyros.y/80000,0,1);
+      mRoll = std::clamp(mRoll + gyros.y/80000,0,1);
       if (mRollUIControl)
          mRollUIControl->SetFromMidiCC(mRoll);
       isButtonDown = true;
@@ -139,7 +139,7 @@ void PSMoveController::Poll()
 
    ofVec3f accel(0,0,0);
    mMoveMgr.GetAccel(0,accel);
-   mEnergy = ofClamp(accel.length()/5000 - .8f,0,1);
+   mEnergy = std::clamp(accel.length()/5000 - .8f,0,1);
    if (mEnergyUIControl)
       mEnergyUIControl->SetFromMidiCC(mEnergy);
 }

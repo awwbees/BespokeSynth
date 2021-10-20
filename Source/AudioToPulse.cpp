@@ -77,12 +77,12 @@ void AudioToPulse::DrawModule()
    ofFill();
    ofSetColor(0, 255, 0, gModuleDrawAlpha*.4f);
    ofRectangle rect = mThresholdSlider->GetRect(true);
-   rect.width *= ofClamp(sqrtf(mPeak), 0, 1);
+   rect.width *= std::clamp(sqrtf(mPeak), 0.0f, 1.0f);
    rect.height *= .5f;
    ofRect(rect);
    ofSetColor(255, 0, 0, gModuleDrawAlpha*.4f);
    rect = mThresholdSlider->GetRect(true);
-   rect.width *= ofClamp(mEnvelope, 0, 1);
+   rect.width *= std::clamp(mEnvelope, 0.0f, 1.0f);
    rect.height *= .5f;
    rect.y += rect.height;
    ofRect(rect);

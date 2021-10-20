@@ -72,7 +72,7 @@ void SignalClamp::Process(double time)
          for (int i=0; i<bufferSize; ++i)
          {
             ComputeSliders(i);
-            buffer[i] = ofClamp(buffer[i], mMin, mMax);
+            buffer[i] = std::clamp(buffer[i], mMin, mMax);
          }
          Add(out->GetChannel(ch), buffer, bufferSize);
          GetVizBuffer()->WriteChunk(buffer, bufferSize, ch);

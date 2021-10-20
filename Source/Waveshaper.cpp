@@ -149,7 +149,7 @@ void Waveshaper::Process(double time)
                mBiquadState[ch].mHistPre2 = mBiquadState[ch].mHistPre1;
                mBiquadState[ch].mHistPre1 = mExpressionInput;
                mBiquadState[ch].mHistPost2 = mBiquadState[ch].mHistPost1;
-               mBiquadState[ch].mHistPost1 = ofClamp(buffer[i], -1, 1); //keep feedback from spiraling out of control
+               mBiquadState[ch].mHistPost1 = std::clamp(buffer[i], -1, 1); //keep feedback from spiraling out of control
             }
          }
          Add(out->GetChannel(ch), buffer, bufferSize);

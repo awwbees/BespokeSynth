@@ -93,7 +93,7 @@ void ModulatorGravity::OnTransportAdvanced(float amount)
    float dt = amount * TheTransport->MsPerBar();
    float newVelocity = mVelocity + mGravity / 100000 * dt;
    newVelocity -= newVelocity * mDrag * dt;
-   float newValue = ofClamp(mValue + newVelocity * dt, 0, 1);
+   float newValue = std::clamp(mValue + newVelocity * dt, 0, 1);
    mVelocity = (newValue - mValue) / dt;
    mValue = newValue;
 }
@@ -101,7 +101,7 @@ void ModulatorGravity::OnTransportAdvanced(float amount)
 float ModulatorGravity::Value(int samplesIn)
 {
    ComputeSliders(samplesIn);
-   //return ofClamp(mRamp.Value(gTime + samplesIn * gInvSampleRateMs), GetMin(), GetMax());
+   //return std::clamp(mRamp.Value(gTime + samplesIn * gInvSampleRateMs), GetMin(), GetMax());
    return ofLerp(GetMin(), GetMax(), mValue); //TODO(integrate over samples)
 }
 

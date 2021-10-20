@@ -67,7 +67,7 @@ float Oscillator::Value(float phase) const
             phase01 += .75f;
             phase01 -= (mPulseWidth - .5f) / 2;
             phase01 -= int(phase01);
-            sample = ofClamp((fabs(phase01 - .5f) * 4 - 1 + (mPulseWidth-.5f) * 2) / mSoften,-1,1);
+            sample = std::clamp((fabs(phase01 - .5f) * 4 - 1 + (mPulseWidth-.5f) * 2) / mSoften,-1,1);
          }
          break;
       case kOsc_Tri:

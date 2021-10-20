@@ -88,9 +88,9 @@ void EnvelopeControl::Draw()
    
    ofPushStyle();
    ofSetColor(0, 58, 245, gModuleDrawAlpha);
-   ofLine(ofClamp(GetXForTime(GetPreSustainTime()), mPosition.x, mPosition.x + mDimensions.x),
+   ofLine(std::clamp(GetXForTime(GetPreSustainTime()), mPosition.x, mPosition.x + mDimensions.x),
           GetYForValue(mViewAdsr.Value(GetPreSustainTime())),
-          ofClamp(GetXForTime(GetReleaseTime()), mPosition.x, mPosition.x + mDimensions.x),
+          std::clamp(GetXForTime(GetReleaseTime()), mPosition.x, mPosition.x + mDimensions.x),
           GetYForValue(mViewAdsr.Value(GetReleaseTime())));
    ofPopStyle();
    
@@ -161,7 +161,7 @@ void EnvelopeControl::Draw()
    ofSetColor(0,255,0,gModuleDrawAlpha * .5f);
    float drawTime = 0;
    if (mAdsr->GetStartTime(gTime) > 0 && mAdsr->GetStartTime(gTime) >= mAdsr->GetStopTime(gTime))
-      drawTime = ofClamp(gTime - mAdsr->GetStartTime(gTime), 0, GetReleaseTime());
+      drawTime = std::clamp(gTime - mAdsr->GetStartTime(gTime), 0, GetReleaseTime());
    if (mAdsr->GetStopTime(gTime) > mAdsr->GetStartTime(gTime))
       drawTime = GetReleaseTime() + (gTime - mAdsr->GetStopTime(gTime));
    if (drawTime > 0 && drawTime < mViewLength)
@@ -318,7 +318,7 @@ void EnvelopeControl::MouseMoved(float x, float y)
             }
          }
          
-         stage.time = ofClamp(originalStage.time + (x - mClickStart.x)/mDimensions.x * mViewLength, 0.001f, maxLength);
+         stage.time = std::clamp(originalStage.time + (x - mClickStart.x)/mDimensions.x * mViewLength, 0.001f, maxLength);
          
          if (mFixedLengthMode && mHighlightPoint < mAdsr->GetNumStages() - 1)
          {
@@ -327,7 +327,7 @@ void EnvelopeControl::MouseMoved(float x, float y)
          }
          
          if (mHighlightPoint < mAdsr->GetNumStages()-1 || mAdsr->GetFreeReleaseLevel())
-            stage.target = ofClamp(originalStage.target + ((mClickStart.y - y) / mDimensions.y), 0, 1);
+            stage.target = std::clamp(originalStage.target + ((mClickStart.y - y) / mDimensions.y), 0, 1);
          else
             stage.target = 0;
       }
@@ -337,7 +337,7 @@ void EnvelopeControl::MouseMoved(float x, float y)
          ::ADSR::Stage& stage = mAdsr->GetStageData(mHighlightCurve);
          ::ADSR::Stage& originalStage = mClickAdsr.GetStageData(mHighlightCurve);
          
-         stage.curve = ofClamp(originalStage.curve + ((mClickStart.y - y) / mDimensions.y), -1, 1);
+         stage.curve = std::clamp(originalStage.curve + ((mClickStart.y - y) / mDimensions.y), -1, 1);
       }
    }
 }

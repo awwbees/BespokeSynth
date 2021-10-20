@@ -287,7 +287,7 @@ void CodeEntry::Render()
    }
    ofRect(mX, mY, w, h);
    
-   double timeSincePublished = gTime - mLastPublishTime;
+   float timeSincePublished = gTime - mLastPublishTime;
    if (TheSynth->IsAudioPaused())
       timeSincePublished = 99999;
    
@@ -306,7 +306,7 @@ void CodeEntry::Render()
    }
    else if (mString != mPublishedString)
    {
-      float highlight = 1 - ofClamp(timeSincePublished / 150, 0, 1);
+      float highlight = 1 - std::clamp(timeSincePublished / 150, 0.0f, 1.0f);
       ofSetColor(ofLerp(170,255,highlight), 255, ofLerp(170,255,highlight), gModuleDrawAlpha);
       ofSetLineWidth(2 + highlight * 3);
    }
@@ -547,7 +547,7 @@ void CodeEntry::DrawSyntaxHighlight(std::string input, ofColor color, std::vecto
    std::string filtered = FilterText(input, mapping, filter1, filter2);
    ofSetColor(color, gModuleDrawAlpha);
    
-   float shake = (1 - ofClamp((gTime - mLastPublishTime) / 150, 0, 1)) * 3.0f;
+   float shake = (1 - std::clamp(float(gTime - mLastPublishTime) / 150, 0.0f, 1.0f)) * 3.0f;
    if (TheSynth->IsAudioPaused())
       shake = 0;
    float offsetX = ofRandom(-shake, shake);

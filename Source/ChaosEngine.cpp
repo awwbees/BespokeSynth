@@ -827,7 +827,7 @@ void ChaosEngine::IntSliderUpdated(IntSlider* slider, int oldVal)
    }
    if (slider == mChordProgressionSlider)
    {
-      mChordProgressionIdx = ofClamp(mChordProgressionIdx, 0, mChordProgression.size()-1);
+      mChordProgressionIdx = std::clamp(mChordProgressionIdx, 0, (int)mChordProgression.size()-1);
       if (mProgress)
          mChordProgressionIdx -= 1; //make us progress to this one on the next downbeat
       else

@@ -1170,7 +1170,7 @@ void Push2Control::OnMidiControl(MidiControl& control)
    else if (control.mControl == 14) //leftmost clicky encoder
    {
       int increment = control.mValue < 64 ? control.mValue : control.mValue - 128;
-      mModuleColumnOffset = (int)ofClamp(mModuleColumnOffset + increment, 0, MAX(0, (int)MAX(mSliderControls.size(), mButtonControls.size()) - 8));
+      mModuleColumnOffset = (int)std::clamp(mModuleColumnOffset + increment, 0, MAX(0, (int)MAX(mSliderControls.size(), mButtonControls.size()) - 8));
    }
    else if (control.mControl == 15) //encoder next to above encoder
    {

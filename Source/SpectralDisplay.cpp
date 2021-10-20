@@ -124,7 +124,7 @@ void SpectralDisplay::DrawModule()
    {
       float x = sqrtf(float(i-kBinIgnore)/(end-kBinIgnore-1)) * w;
       float samp = sqrtf(fabsf(mFFTData.mRealValues[i]) / end) * 3;
-      float y = ofClamp(samp, 0, 1) * h;
+      float y = std::clamp(samp, 0, 1) * h;
       ofVertex(x, h-y);
       
       mSmoother[i-kBinIgnore] = ofLerp(mSmoother[i-kBinIgnore], samp, .1f);
@@ -139,7 +139,7 @@ void SpectralDisplay::DrawModule()
    for (int i=kBinIgnore; i<end; i++)
    {
       float x = sqrtf(float(i-kBinIgnore)/(end-kBinIgnore-1)) * w;
-      float y = ofClamp(mSmoother[i-kBinIgnore], 0, 1) * h;
+      float y = std::clamp(mSmoother[i-kBinIgnore], 0, 1) * h;
       ofVertex(x, h-y);
    }
    ofEndShape(false);

@@ -221,7 +221,7 @@ void PatchCable::Render()
             float range = abs(modulator->GetMax() - modulator->GetMin());
             if (range > .00001f)
             {
-               float delta = ofClamp(modulator->GetRecentChange() / range, -1, 1);
+               float delta = std::clamp(modulator->GetRecentChange() / range, -1, 1);
                ofColor color = ofColor::lerp(ofColor::blue, ofColor::red, delta * .5f + .5f);
                color.a = abs(1 - ((1-delta)*(1-delta))) * 150;
                ofSetColor(color);
@@ -256,12 +256,12 @@ void PatchCable::Render()
                float clampedElapsed = MIN(elapsed, 1);
                if (event.mOn)
                {
-                  ofSetLineWidth(lineWidth * (4 + ofClamp(1 - elapsed * .7f, 0, 1) * 5 + cos((gTime - event.mTime) * PI * 8 / TheTransport->MsPerBar()) * .3f));
+                  ofSetLineWidth(lineWidth * (4 + std::clamp(1 - elapsed * .7f, 0, 1) * 5 + cos((gTime - event.mTime) * PI * 8 / TheTransport->MsPerBar()) * .3f));
                   ofBeginShape();
                   ofVec2f pos;
                   for (int j=lastElapsed*wireLength; j< clampedElapsed*wireLength; ++j)
                   {
-                     pos = MathUtils::Bezier(ofClamp(j/wireLength, 0, 1), cable.start, bezierControl1, bezierControl2, cable.plug);
+                     pos = MathUtils::Bezier(std::clamp(j/wireLength, 0, 1), cable.start, bezierControl1, bezierControl2, cable.plug);
                      ofVertex(pos.x,pos.y);
                   }
                   ofEndShape();
@@ -312,7 +312,7 @@ void PatchCable::Render()
                ofVec2f pos = MathUtils::Bezier(i/wireLength, cable.start, bezierControl1, bezierControl2, cable.plug);
                float sample = vizBuff->GetSample((i/wireLength * numSamples), ch);
                sample = sqrtf(fabsf(sample)) * (sample < 0 ? -1 : 1);
-               sample = ofClamp(sample, -1.0f, 1.0f);
+               sample = std::clamp(sample, -1.0f, 1.0f);
                ofVec2f sampleOffsetDir = MathUtils::BezierPerpendicular(i/wireLength, cable.start, bezierControl1, bezierControl2, cable.plug);
                pos += sampleOffsetDir * 10 * sample;
                ofVertex(pos.x + offset.x,pos.y + offset.y);
@@ -529,7 +529,7 @@ PatchCablePos PatchCable::GetPatchCablePos()
    }
    
    float plugDirDistanceToStart = endDirection.dot(start-end);
-   float plugLength = ofClamp(plugDirDistanceToStart - 20, 5, 14);
+   float plugLength = std::clamp(plugDirDistanceToStart - 20, 5, 14);
    ofVec2f plug = end + endDirection * plugLength;
    
    PatchCablePos cable;

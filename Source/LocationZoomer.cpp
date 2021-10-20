@@ -50,7 +50,7 @@ void LocationZoomer::Update()
 {
    if (mCurrentProgress < 1)
    {
-      mCurrentProgress = ofClamp(mCurrentProgress + ofGetLastFrameTime() * mSpeed, 0, 1);
+      mCurrentProgress = std::clamp(mCurrentProgress + ofGetLastFrameTime() * mSpeed, 0, 1);
       float ease;
       if (mInVanityPanningMode)  //ease in/out
          ease = mCurrentProgress < 0.5 ? 2 * mCurrentProgress * mCurrentProgress : 1 - pow(-2 * mCurrentProgress + 2, 2) / 2;

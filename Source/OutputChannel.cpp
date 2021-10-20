@@ -139,7 +139,7 @@ void OutputChannel::DrawModule()
          else if (j > kNumSegments - 6)
             color.set(255, 255, 0);
          
-         if (slowLevel > 0 && ofClamp(int(slowLevel * kNumSegments), 0, kNumSegments-1) == j)
+         if (slowLevel > 0 && std::clamp(int(slowLevel * kNumSegments), 0, kNumSegments-1) == j)
             ofSetColor(color);
          else if (level > 0 && level >= j/(float)kNumSegments)
             ofSetColor(color * .9f);

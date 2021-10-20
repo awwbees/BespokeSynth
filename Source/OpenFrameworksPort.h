@@ -218,7 +218,6 @@ void ofNoFill();
 void ofCircle(float x, float y, float radius);
 void ofRect(float x, float y, float width, float height, float cornerRadius = 3);
 void ofRect(const ofRectangle& rect, float cornerRadius = 3);
-float ofClamp(float val, float a, float b);
 float ofGetLastFrameTime();
 int ofToInt(const std::string& intString);
 float ofToFloat(const std::string& floatString);

@@ -154,8 +154,8 @@ float QuadraticBezier (float x, float a, float b)
 	// http://www.tinaja.com/text/bezmath.html
    
 	float epsilon = 0.00001f;
-	a = ofClamp(a,0,1);
-	b = ofClamp(b,0,1);
+	a = std::clamp(a,0,1);
+	b = std::clamp(b,0,1);
 	if (a == 0.5f){
 		a += epsilon;
 	}

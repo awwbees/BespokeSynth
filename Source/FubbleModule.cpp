@@ -192,7 +192,7 @@ void FubbleModule::DrawModule()
          {
             float x = col * (rect.width/kGridSize);
             float y = row * (rect.height/kGridSize);
-            ofSetColor(GetPerlinNoiseValue(perlinTime, x/rect.width, y/rect.height, true)*255, 0, GetPerlinNoiseValue(perlinTime, x/rect.width, y/rect.height, false)*255, ofClamp(mPerlinStrength, 0, 1) * 255);
+            ofSetColor(GetPerlinNoiseValue(perlinTime, x/rect.width, y/rect.height, true)*255, 0, GetPerlinNoiseValue(perlinTime, x/rect.width, y/rect.height, false)*255, std::clamp(mPerlinStrength, 0, 1) * 255);
             ofRect(x,y,(rect.width/kGridSize)+.5f,(rect.height/kGridSize)+.5f,0);
          }
       }
@@ -338,8 +338,8 @@ ofRectangle FubbleModule::GetFubbleRect()
 ofVec2f FubbleModule::GetFubbleMouseCoord()
 {
    ofRectangle fubbleRect = GetFubbleRect();
-   return ofVec2f(ofClamp((mMouseX-fubbleRect.x) / fubbleRect.width, 0, 1),
-                  ofClamp(1 - ((mMouseY-fubbleRect.y) / fubbleRect.height), 0, 1));
+   return ofVec2f(std::clamp((mMouseX-fubbleRect.x) / fubbleRect.width, 0, 1),
+                  std::clamp(1 - ((mMouseY-fubbleRect.y) / fubbleRect.height), 0, 1));
 }
 
 void FubbleModule::OnClicked(int x, int y, bool right)

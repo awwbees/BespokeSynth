@@ -160,7 +160,7 @@ bool Checkbox::MouseMoved(float x, float y)
 
 void Checkbox::SetFromMidiCC(float slider, bool setViaModulator /*= false*/)
 {
-   slider = ofClamp(slider,0,1);
+   slider = std::clamp(slider,0,1);
    mSliderVal = slider;
    bool on = GetValueForMidiCC(slider) > 0;
    if (*mVar != on)
