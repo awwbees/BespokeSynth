@@ -1686,13 +1686,16 @@ void MidiController::LoadControllerLayout(std::string filename)
                   connectionType = kControlType_Toggle;
                if (mLayoutData["groups"][group]["connection_type"] == "direct")
                   connectionType = kControlType_Direct;
+               int channel = -1;
+               if (!mLayoutData["groups"][group]["channel"].isNull())
+                  channel = mLayoutData["groups"][group]["channel"].asInt();
                for (int row = 0; row < rows; ++row)
                {
                   for (int col = 0; col < cols; ++col)
                   {
                      int index = col + row * cols;
                      int control = mLayoutData["groups"][group]["controls"][index].asInt();
-                     GetLayoutControl(control, messageType).Setup(this, messageType, control, drawType, incrementAmount, offVal, onVal, false, connectionType, pos.x + kLayoutButtonsX + spacing.x * col, pos.y + kLayoutButtonsY + spacing.y * row, dim.x, dim.y);
+                     GetLayoutControl(control, messageType).Setup(this, messageType, control, channel, drawType, incrementAmount, offVal, onVal, false, connectionType, pos.x + kLayoutButtonsX + spacing.x * col, pos.y + kLayoutButtonsY + spacing.y * row, dim.x, dim.y);
 
                      //clear out values on controllers
                      /*if (messageType == kMidiMessage_Note)
@@ -1770,11 +1773,11 @@ void MidiController::LoadControllerLayout(std::string filename)
 
       for (int i = 0; i < 128; ++i)
       {
-         GetLayoutControl(i, kMidiMessage_Control).Setup(this, kMidiMessage_Control, i, kDrawType_Slider, 0, 0, 127, true, kControlType_Default, i % 8 * kSpacingX + kLayoutButtonsX + 9, i / 8 * kSpacingY + kLayoutButtonsY, kSpacingX * .666f, kSpacingY * .93f);
-         GetLayoutControl(i, kMidiMessage_Note).Setup(this, kMidiMessage_Note, i, kDrawType_Button, 0, 0, 127, true, kControlType_Default, i % 8 * kSpacingX + 8 * kSpacingX + kLayoutButtonsX + 15, i / 8 * kSpacingY + kLayoutButtonsY, kSpacingX * .93f, kSpacingY * .93f);
+         GetLayoutControl(i, kMidiMessage_Control).Setup(this, kMidiMessage_Control, i, -1, kDrawType_Slider, 0, 0, 127, true, kControlType_Default, i % 8 * kSpacingX + kLayoutButtonsX + 9, i / 8 * kSpacingY + kLayoutButtonsY, kSpacingX * .666f, kSpacingY * .93f);
+         GetLayoutControl(i, kMidiMessage_Note).Setup(this, kMidiMessage_Note, i, -1, kDrawType_Button, 0, 0, 127, true, kControlType_Default, i % 8 * kSpacingX + 8 * kSpacingX + kLayoutButtonsX + 15, i / 8 * kSpacingY + kLayoutButtonsY, kSpacingX * .93f, kSpacingY * .93f);
       }
 
-      GetLayoutControl(0, kMidiMessage_PitchBend).Setup(this, kMidiMessage_PitchBend, 0, kDrawType_Slider, 0, 0, 127, true, kControlType_Default, kLayoutButtonsX + kSpacingX * 17, kLayoutButtonsY, 25, 100);
+      GetLayoutControl(0, kMidiMessage_PitchBend).Setup(this, kMidiMessage_PitchBend, 0, -1, kDrawType_Slider, 0, 0, 127, true, kControlType_Default, kLayoutButtonsX + kSpacingX * 17, kLayoutButtonsY, 25, 100);
    }
 
    mLayoutWidth = 0;
@@ -2751,13 +2754,14 @@ UIControlConnection::~UIControlConnection()
    mEditorControls.clear();
 }
 
-void ControlLayoutElement::Setup(MidiController* owner, MidiMessageType type, int control, ControlDrawType drawType, float incrementAmount, int offVal, int onVal, bool scaleOutput, ControlType connectionType, float x, float y, float w, float h)
+void ControlLayoutElement::Setup(MidiController* owner, MidiMessageType type, int control, int channel, ControlDrawType drawType, float incrementAmount, int offVal, int onVal, bool scaleOutput, ControlType connectionType, float x, float y, float w, float h)
 {
    assert(incrementAmount == 0 || type == kMidiMessage_Control); //only control type can be incremental
 
    mActive = true;
    mType = type;
    mControl = control;
+   mChannel = channel;
    mDrawType = drawType;
    mIncrementAmount = incrementAmount;
    mOffVal = offVal;

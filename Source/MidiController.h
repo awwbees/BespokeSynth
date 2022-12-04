@@ -219,11 +219,12 @@ struct ControlLayoutElement
 {
    ControlLayoutElement()
    {}
-   void Setup(MidiController* owner, MidiMessageType type, int control, ControlDrawType drawType, float incrementAmount, int offVal, int onVal, bool scaleOutput, ControlType connectionType, float x, float y, float w, float h);
+   void Setup(MidiController* owner, MidiMessageType type, int control, int channel, ControlDrawType drawType, float incrementAmount, int offVal, int onVal, bool scaleOutput, ControlType connectionType, float x, float y, float w, float h);
 
    bool mActive{ false };
    MidiMessageType mType{ MidiMessageType::kMidiMessage_Control };
    int mControl{ 0 };
+   int mChannel{ -1 };
    ofVec2f mPosition;
    ofVec2f mDimensions;
    ControlDrawType mDrawType{ ControlDrawType::kDrawType_Slider };
