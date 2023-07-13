@@ -672,6 +672,20 @@ bool IDrawableModule::MouseMoved(float x, float y)
    return false;
 }
 
+bool IDrawableModule::MouseDragged(float x, float y)
+{
+   if (!mShowing)
+      return false;
+   if (Minimized())
+      return false;
+   for (int i = 0; i < mUIControls.size(); ++i)
+      mUIControls[i]->NotifyMouseDragged(x, y);
+   for (int i = 0; i < mChildren.size(); ++i)
+      mChildren[i]->NotifyMouseDragged(x, y);
+
+   return false;
+}
+
 void IDrawableModule::MouseReleased()
 {
    mWasMinimizeAreaClicked = false;

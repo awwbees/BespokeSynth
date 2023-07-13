@@ -1313,9 +1313,6 @@ void ModularSynth::MouseMoved(int intX, int intY)
 
 void ModularSynth::MouseDragged(int intX, int intY, int button, const juce::MouseInputSource& source)
 {
-   mMousePos.x = intX;
-   mMousePos.y = intY;
-
    float x = GetMouseX(&mModuleContainer);
    float y = GetMouseY(&mModuleContainer);
 
@@ -1329,7 +1326,7 @@ void ModularSynth::MouseDragged(int intX, int intY, int button, const juce::Mous
    {
       float x = GetMouseX(modal->GetOwningContainer());
       float y = GetMouseY(modal->GetOwningContainer());
-      modal->NotifyMouseMoved(x, y);
+      modal->NotifyMouseDragged(x, y);
    }
 
    if ((GetKeyModifiers() & kModifier_Alt) && !mHasDuplicatedDuringDrag)
@@ -1436,11 +1433,11 @@ void ModularSynth::MouseDragged(int intX, int intY, int button, const juce::Mous
       mResizeModule->Resize(newWidth, newHeight);
    }
 
-   mModuleContainer.MouseMoved(x, y);
+   mModuleContainer.MouseDragged(x, y);
 
    x = GetMouseX(&mUILayerModuleContainer);
    y = GetMouseY(&mUILayerModuleContainer);
-   mUILayerModuleContainer.MouseMoved(x, y);
+   mUILayerModuleContainer.MouseDragged(x, y);
 }
 
 void ModularSynth::MousePressed(int intX, int intY, int button, const juce::MouseInputSource& source)

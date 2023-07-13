@@ -55,6 +55,7 @@ public:
    IClickable* GetParent() const { return mParent; }
    void SetParent(IClickable* parent) { mParent = parent; }
    bool NotifyMouseMoved(float x, float y);
+   bool NotifyMouseDragged(float x, float y);
    bool NotifyMouseScrolled(float x, float y, float scrollX, float scrollY, bool isSmoothScroll, bool isInvertedScroll);
    virtual void MouseReleased() {}
    virtual void GetDimensions(float& width, float& height)
@@ -101,6 +102,7 @@ public:
 protected:
    virtual void OnClicked(float x, float y, bool right) {}
    virtual bool MouseMoved(float x, float y) { return false; }
+   virtual bool MouseDragged(float x, float y) { return false; }
    virtual bool MouseScrolled(float x, float y, float scrollX, float scrollY, bool isSmoothScroll, bool isInvertedScroll) { return false; }
 
    float mX{ 0 };

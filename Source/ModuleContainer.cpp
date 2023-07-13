@@ -183,6 +183,22 @@ void ModuleContainer::MouseMoved(float x, float y)
    }
 }
 
+void ModuleContainer::MouseDragged(float x, float y)
+{
+   if (mOwner != nullptr)
+      return;
+
+   for (int i = (int)mModules.size() - 1; i >= 0; --i) //run this backwards so that we can figure out the top hover control
+   {
+      ModuleContainer* subcontainer = mModules[i]->GetContainer();
+      if (subcontainer)
+      {
+         subcontainer->MouseDragged(x - subcontainer->GetOwnerPosition().x, y - subcontainer->GetOwnerPosition().y);
+      }
+      mModules[i]->NotifyMouseDragged(x, y);
+   }
+}
+
 void ModuleContainer::MouseReleased()
 {
    if (mOwner != nullptr)

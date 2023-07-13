@@ -215,6 +215,7 @@ protected:
    void Poll() override {}
    void OnClicked(float x, float y, bool right) override;
    bool MouseMoved(float x, float y) override;
+   bool MouseDragged(float x, float y) override;
 
    void AddDebugLine(std::string text, int maxLines);
 
