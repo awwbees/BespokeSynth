@@ -178,8 +178,6 @@ void Looper::Poll()
 {
    if (mClearCommitBuffer)
    {
-      if (mRecorder == nullptr)
-         mCommitBuffer->ClearBuffer();
       mCommitBuffer = nullptr;
       mClearCommitBuffer = false;
    }
@@ -400,9 +398,14 @@ void Looper::DoCommit(double time)
    mDoCommit = false;
 
    int commitSamplesBack = int(mCommitMsOffset / gInvSampleRateMs);
-   mCommitLength = mLoopLength + LOOPER_COMMIT_FADE_SAMPLES;
-   mCommitBufferStartSample = (mCommitBuffer->GetRawBufferOffset(0) - mCommitLength + commitSamplesBack + mCommitBuffer->Size()) % mCommitBuffer->Size();
-   mCommitTargetBufferOffset = mLoopPos - LOOPER_COMMIT_FADE_SAMPLES;
+   mCommitLength = mLoopLength + mCommitFadeSamples;
+   int bufferOffset = 0;
+   if (mCommitRollingBuffer)
+      bufferOffset = mCommitRollingBuffer->GetRawBufferOffset(0);
+   else
+      bufferOffset = mLoopPos - mCommitFadeSamples;
+   mCommitBufferStartSample = (bufferOffset - mCommitLength + commitSamplesBack + mCommitBufferLength) % mCommitBufferLength;
+   mCommitTargetBufferOffset = mLoopPos - mCommitFadeSamples;
    mCommitSamplesProgress = 0;
 
    if (mMute)
@@ -434,13 +437,13 @@ void Looper::ProcessCommit(int numSamplesToProcess)
    for (int i = 0; i < numSamplesToProcess; ++i)
    {
       float fade = 1;
-      if (mCommitSamplesProgress < LOOPER_COMMIT_FADE_SAMPLES)
-         fade = float(mCommitSamplesProgress) / LOOPER_COMMIT_FADE_SAMPLES;
+      if (mCommitSamplesProgress < mCommitFadeSamples)
+         fade = float(mCommitSamplesProgress) / mCommitFadeSamples;
       if (mCommitSamplesProgress >= mLoopLength)
-         fade = 1 - (float(mCommitSamplesProgress - mLoopLength) / LOOPER_COMMIT_FADE_SAMPLES);
+         fade = 1 - (float(mCommitSamplesProgress - mLoopLength) / mCommitFadeSamples);
       for (int ch = 0; ch < mBuffer->NumActiveChannels(); ++ch)
       {
-         float writeSample = mCommitBuffer->GetRawBuffer()->GetChannel(ch)[(mCommitBufferStartSample + mCommitSamplesProgress) % mCommitBuffer->Size()] * fade;
+         float writeSample = mCommitBuffer->GetChannel(ch)[(mCommitBufferStartSample + mCommitSamplesProgress) % mCommitBufferLength] * fade;
          int writeToIndex = (mCommitSamplesProgress + mCommitTargetBufferOffset) % mLoopLength;
          if (mMute || mReplaceOnCommit)
             mBuffer->GetChannel(ch)[writeToIndex] = writeSample;
@@ -816,7 +819,7 @@ void Looper::DrawBeatwheel()
       mag = MIN(1.0f, mag);
       float inner = (waveformCenter - mag * waveformHeight);
       float outer = (waveformCenter + mag * waveformHeight);
-      //ofSetColor(0,0,0,gModuleDrawAlpha);
+      //ofSetColor(0, 0, 0, gModuleDrawAlpha);
       ofLine(centerX + sinR * inner, centerY - cosR * inner, centerX + sinR * outer, centerY - cosR * outer);
    }
 
@@ -991,7 +994,7 @@ void Looper::CopyBuffer(Looper* sourceLooper)
    mNumBars = sourceLooper->mNumBars;
 }
 
-void Looper::Commit(RollingBuffer* commitBuffer, bool replaceOnCommit, float offsetMs)
+void Looper::Commit(ChannelBuffer* commitBuffer, RollingBuffer* rollingBuffer, int bufferLength, bool replaceOnCommit, float offsetMs)
 {
    if (mRecorder)
    {
@@ -1013,8 +1016,11 @@ void Looper::Commit(RollingBuffer* commitBuffer, bool replaceOnCommit, float off
       mGranulator->OnCommit();
 
    mCommitBuffer = commitBuffer;
+   mCommitRollingBuffer = rollingBuffer;
+   mCommitBufferLength = bufferLength;
    mReplaceOnCommit = replaceOnCommit;
    mCommitMsOffset = offsetMs;
+   mCommitFadeSamples = mCommitRollingBuffer ? LOOPER_COMMIT_FADE_SAMPLES : 0;
    mDoCommit = true;
 }
 

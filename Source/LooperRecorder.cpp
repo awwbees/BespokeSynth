@@ -187,7 +187,7 @@ void LooperRecorder::Process(double time)
    {
       SyncLoopLengths();
       mCommitToLooper->SetNumBars(mNumBars);
-      mCommitToLooper->Commit(&mRecordBuffer, false, mLatencyFixMs);
+      mCommitToLooper->Commit(mRecordBuffer.GetRawBuffer(), &mRecordBuffer, mRecordBuffer.Size(), false, mLatencyFixMs);
 
       mRecorderMode = kRecorderMode_Record;
       if (mTemporarilySilenceAfterCommit)

@@ -62,7 +62,7 @@ public:
    void SetRecorder(LooperRecorder* recorder);
    LooperRecorder* GetRecorder() const { return mRecorder; }
    void Clear();
-   void Commit(RollingBuffer* commitBuffer, bool replaceOnCommit, float offsetMs);
+   void Commit(ChannelBuffer* commitBuffer, RollingBuffer* rollingBuffer, int bufferLength, bool replaceOnCommit, float offsetMs);
    void Fill(ChannelBuffer* buffer, int length);
    void ResampleForSpeed(float speed);
    int GetNumBars() const { return mNumBars; }
@@ -176,7 +176,9 @@ private:
    ClickButton* mSwapButton{ nullptr };
    ClickButton* mCopyButton{ nullptr };
    bool mDoCommit{ false }; //if this is set, a commit happens next audio frame
-   RollingBuffer* mCommitBuffer{ nullptr };
+   RollingBuffer* mCommitRollingBuffer{ nullptr };
+   ChannelBuffer* mCommitBuffer{ nullptr };
+   int mCommitBufferLength{ -1 };
    int mCommitBufferStartSample{ -1 };
    int mCommitTargetBufferOffset{ -1 };
    int mCommitSamplesProgress{ -1 };
@@ -202,6 +204,7 @@ private:
    bool mWantUndo{ false };
    bool mReplaceOnCommit{ false };
    float mCommitMsOffset{ 0 }; //offset passed in from looperrecorder, to use when capturing a loop from it
+   int mCommitFadeSamples{ 0 };
    float mLoopPosOffset{ 0 };
    FloatSlider* mLoopPosOffsetSlider{ nullptr };
    ClickButton* mWriteOffsetButton{ nullptr };

@@ -108,7 +108,7 @@
 #include "NoteCanvas.h"
 #include "SlowLayers.h"
 #include "ClipLauncher.h"
-#include "LoopStorer.h"
+#include "LooperBank.h"
 #include "CommentDisplay.h"
 #include "ComboGridController.h"
 #include "StutterControl.h"
@@ -517,11 +517,11 @@ ModuleFactory::ModuleFactory()
    REGISTER(TapTempo, taptempo, kModuleCategory_Other);
    REGISTER(ZeroCrossRate, zerocrossrate, kModuleCategory_Modulator);
    REGISTER(SessionOrganizer, sessionorganizer, kModuleCategory_Other);
+   REGISTER(LooperBank, looperbank, kModuleCategory_Other);
 
    //REGISTER_EXPERIMENTAL(MidiPlayer, midiplayer, kModuleCategory_Instrument);
    REGISTER_HIDDEN(Autotalent, autotalent, kModuleCategory_Audio);
    REGISTER_HIDDEN(TakeRecorder, takerecorder, kModuleCategory_Audio);
-   REGISTER_HIDDEN(LoopStorer, loopstorer, kModuleCategory_Other);
    REGISTER_HIDDEN(PitchChorus, pitchchorus, kModuleCategory_Audio);
    REGISTER_HIDDEN(ComboGridController, combogrid, kModuleCategory_Other);
    REGISTER_HIDDEN(VSTPlugin, plugin, kModuleCategory_Synth);

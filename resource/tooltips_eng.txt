@@ -96,7 +96,7 @@ oscoutput~send OSC messages when slider values change or when notes are received
 
 
 
-loopstorer~[abandoned module, probably broken]store a looper's loops to swap them in and out
+looperbank~store a looper's loops to swap them in and out
 ~rewrite~[todo]
 ~quantization~[todo]
 ~clear~[todo]

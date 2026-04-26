@@ -311,8 +311,8 @@ target_sources(BespokeSynth PRIVATE
     LocationZoomer.cpp
     LocationZoomer.h
     LockFreeQueue.h
-    LoopStorer.cpp
-    LoopStorer.h
+    LooperBank.cpp
+    LooperBank.h
     Looper.cpp
     Looper.h
     LooperGranulator.cpp

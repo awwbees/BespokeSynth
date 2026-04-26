@@ -42,6 +42,7 @@ public:
    int Size() { return mBuffer.BufferSize(); }
    ChannelBuffer* GetRawBuffer() { return &mBuffer; }
    int GetRawBufferOffset(int channel) { return mOffsetToNow[channel]; }
+   void SetRawBufferOffset(int channel, int offset) { mOffsetToNow[channel] = offset; }
    void Accum(int samplesAgo, float sample, int channel);
    void SetNumChannels(int channels) { mBuffer.SetNumActiveChannels(channels); }
    int NumChannels() const { return mBuffer.NumActiveChannels(); }
