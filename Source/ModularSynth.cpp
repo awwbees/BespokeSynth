@@ -3181,7 +3181,8 @@ void ModularSynth::LoadStatePopupImp()
 
 void ModularSynth::SaveState(std::string file, bool autosave)
 {
-   AddRecentFile(file, true);
+   if (!autosave)
+      AddRecentFile(file, true);
 
    mQueuedSaveStateInfo.mFile = file;
    mQueuedSaveStateInfo.mAutosave = autosave;
