@@ -456,11 +456,13 @@ int Transport::GetQuantized(double time, const TransportListenerInfo* listenerIn
       }
       case kInterval_CustomDivisor:
       {
+         if (listenerInfo->mCustomDivisor <= 1)
+            pos += measure;
          double ret = pos * listenerInfo->mCustomDivisor;
          if (remainderMs != nullptr)
          {
             double remainder = ret - (int)ret;
-            if (mSwing == .5f)
+            if (mSwing == .5f && listenerInfo->mCustomDivisor > 0)
                *remainderMs = remainder * (MsPerBar() / listenerInfo->mCustomDivisor);
             else
                *remainderMs = 0; //TODO(Ryan) this is incorrect, figure out how to properly calculate remainderMs when swing is applied
