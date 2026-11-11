@@ -306,7 +306,7 @@ public:
    UserPrefFloat ui_scale
    {
       "ui_scale",
-#if BESPOKE_IOS
+#if BESPOKE_MOBILE
       1.0f
 #else
       1.3f
